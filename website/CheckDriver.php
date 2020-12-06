@@ -10,9 +10,10 @@ $con=mysqli_connect("localhost","root","root","471project");
 
 // Check connection
 if (mysqli_connect_errno())
-  {
-  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-  }
+{
+    echo "<html><body><p>Failed to connect to MySQL: " . mysqli_connect_error()."</p></body></html>";
+    exit;
+}
 
 // Get the bus driver
 $query = "SELECT * FROM bus_driver where Driver_id=? AND Password =?";
@@ -126,10 +127,6 @@ else{
         echo "<p>" . $time . "</p>";
         
         for($i=1; $i <= $numrows; $i+=1) {
-            /* if (is_int($i)) {
-                echo "<p>Is int</p>";
-                echo "<p>" . strlen($date) . "</p>";
-            } */
             for($j=1; $j <= $numcols; $j+=1) {
                 $stmt =$con->prepare("INSERT INTO seat VALUES (?, ?, ?, ?, ?)");
                 $stmt->bind_param('issii',$routeno,$date,$time,$i,$j); // add the values
@@ -172,27 +169,5 @@ else{
         
 
 
-?>
-
-  
-<?php
-
-/* echo "<table border='1'>
-<tr>
-<th>DriverID</th>
-<th>Password</th>
-</tr>";
-
- while($row = $result->fetch_assoc())
-  {
-    echo "<tr>";
-  echo "<td>" . $row['Driver_id'] . "</td>";
-  echo "<td>" . $row['Password'] . "</td>";
-  echo "</tr>";
-  }
-echo "</table>";
- ?> */
-
-mysqli_close($con);
 ?>
 

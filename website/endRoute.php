@@ -16,12 +16,10 @@
     }
     
     setDisembarksAt($con,$ROUTENO,$DATE,$STARTTIME);
-    unset($_SESSION["Route_no"]);
-    unset($_SESSION["Date"]);
-    unset($_SESSION["Start_time"]);
-    unset($_SESSION["Row"]);
-    unset($_SESSION["Col"]);
-    unset($_SESSION["Employee"]);
+    
+    //Unset all the session variables
+    $_SESSION = array();
+    
     session_destroy(); // get rid of everything in the session
     mysqli_close($con);
     $redirect =  "Location: index.php"; // go back to previous page
