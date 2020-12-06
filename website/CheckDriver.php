@@ -44,6 +44,18 @@ if ($thedriver){ // check that route and bus exist
             $routeinstance = createRouteInstance($con,$thedriver,$theroute,$thebus);
             // give this to another page and return
             echo "<p>We did it?</p>";
+            /*$url = urlencode($routeinstance['Date']);
+            $redirect = "Location: showBusLayout.php?route_no=".$routeinstance['Route_no']."&date=".$url."&time=".$routeinstance['Start_time'];
+            echo "<p>".$redirect."</p>"; */
+            
+            $_SESSION["Route_no"] = $routeinstance['Route_no'];
+            $_SESSION["Date"] = $routeinstance['Date'];
+            $_SESSION["Start_time"] = $routeinstance['Start_time'];
+            $redirect =  "Location: showBusLayout.php";
+            echo "<p>Got here".$_SESSION["Start_time"]."</p>";
+            
+            header($redirect);
+            exit;
         }
         else {
             echo "<p>Bus not found.</p>";
@@ -85,15 +97,14 @@ else{
         $result2 = $stmt->get_result();
         $bustype = $result2->fetch_assoc();
         
-        //Check error
-        if(!$con->prepare("INSERT INTO seat VALUES (?, ?, ?, ?, ?)")) {
-             echo "<p>Error</p>";
-        }
+        //start a session, we need some variables from here maybe?
+        session_start();
+        $_SESSION['No_of_rows'] = $bustype['No_of_rows'];
+        $_SESSION['No_of_cols'] = $bustype['No_of_cols'];
         
-        //echo "<p>" . $newinstance['Route_no'] . "</p>";
         //Set up the seats
         setUpSeats($con,$newinstance,$bustype);
-        
+        mysqli_close($con); // close the connection to the database
         return $newinstance;
     }
 
@@ -106,7 +117,6 @@ else{
         
         //Create the seats
         $numrows = $btype['No_of_rows'];
-        
         $numcols = $btype['No_of_cols'];
         $routeno = $instance['Route_no'];
         $date = $instance['Date'];
