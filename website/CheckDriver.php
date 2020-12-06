@@ -2,7 +2,6 @@
 
 $DRIVERID = $_POST["DriverID"];
 $PASSWORD = $_POST["Password"];
-//$PASSWORD = 'jsmith';
 $ROUTENO = $_POST["Route_no"];
 $BUSNO = $_POST["bus_no"];
 
@@ -42,33 +41,39 @@ if ($thedriver){ // check that route and bus exist
         $thebus = $result->fetch_assoc();
         if($thebus) { //everything exists, create a vaild route instance
             $routeinstance = createRouteInstance($con,$thedriver,$theroute,$thebus);
-            // give this to another page and return
-            echo "<p>We did it?</p>";
-            /*$url = urlencode($routeinstance['Date']);
-            $redirect = "Location: showBusLayout.php?route_no=".$routeinstance['Route_no']."&date=".$url."&time=".$routeinstance['Start_time'];
-            echo "<p>".$redirect."</p>"; */
             
+            // give this to another page and return
+            session_start();
             $_SESSION["Route_no"] = $routeinstance['Route_no'];
             $_SESSION["Date"] = $routeinstance['Date'];
             $_SESSION["Start_time"] = $routeinstance['Start_time'];
             $redirect =  "Location: showBusLayout.php";
-            echo "<p>Got here".$_SESSION["Start_time"]."</p>";
-            
             header($redirect);
             exit;
         }
         else {
             echo "<p>Bus not found.</p>";
+            mysqli_close($con);
+            echo "<form action=\"index.php\" method=\"post\">
+                    <input type=\"submit\" value=\"Return to main page\">
+                    </form>";
         }
     }
     else{
         echo "<p>Route not found.</p>";
+        mysqli_close($con);
+        echo "<form action=\"index.php\" method=\"post\">
+                    <input type=\"submit\" value=\"Return to main page\">
+                    </form>";
     }   
 }
 else{
     echo "<p>Driver not found.</p>";
+    mysqli_close($con);
+    echo "<form action=\"index.php\" method=\"post\">
+                    <input type=\"submit\" value=\"Return to main page\">
+                    </form>";
 }
-//include some option to return
 
 ?>
  
@@ -76,6 +81,7 @@ else{
 // Creates a route instance with the correct seat layout for the bus and the current date and time. Also sets the seats that are in proximity correctly.
     function createRouteInstance($con,$d,$r,$b) {
         $stmt =$con->prepare("INSERT INTO route_instance (Route_no, Date, Start_time, Driver_id, Vehicle_id) VALUES (?, ?, ?, ?,?)");
+        date_default_timezone_set("America/Edmonton");
         $date = date("Y/m/d"); // get the date
         $time = date("H:i:s"); // get the current time
         $stmt->bind_param("issii",$r['Route_no'],$date,$time,$d['Driver_id'],$b['Vehicle_id']); // add the values
@@ -96,11 +102,6 @@ else{
         $stmt->execute();
         $result2 = $stmt->get_result();
         $bustype = $result2->fetch_assoc();
-        
-        //start a session, we need some variables from here maybe?
-        session_start();
-        $_SESSION['No_of_rows'] = $bustype['No_of_rows'];
-        $_SESSION['No_of_cols'] = $bustype['No_of_cols'];
         
         //Set up the seats
         setUpSeats($con,$newinstance,$bustype);
