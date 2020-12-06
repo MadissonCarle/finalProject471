@@ -1,3 +1,14 @@
+<?ph
+// Initialize the session
+session_start();
+ 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: adminLogin.php");
+    exit;
+}
+?>
+
 <html>
 <body>
 
@@ -5,7 +16,7 @@
 <form action="searchEmp.php" method="post">
    First Name: <input type="text" name="FirstName"><br>
    Last Name: <input type="text" name="LastName"><br>
-   <input type="submit" value="Search for employee">
+   <input type="submit" value="find">
 </form>
 <h1>Find employees that were in close proximity to a contageous individual by entering their ID</h1>
 <form action="searchProximity.php" method="post">
@@ -13,7 +24,7 @@
    <input type="submit" value="Find employees in proximity">
     
 </form>
-       <input type="submit" value="Logout">
+    <form><button type="Admin"formaction="logoutAdmin.php"> Logout</button></form>
 
 </body>
 </html>

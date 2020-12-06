@@ -1,3 +1,7 @@
+<?php
+ $_SESSION["loggedin"] = false;
+?>
+
 <html>
     <body> 
     <form action="/index.php" method="get">
