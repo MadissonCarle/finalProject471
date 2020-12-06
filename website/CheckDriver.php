@@ -13,16 +13,6 @@ $data = array (
 $url = 'verifyBusDriver.php';
 $returnval = sendReceiveJSONPOST($url,$data);
 
-// Create connection
-$con=mysqli_connect("localhost","root","root","471project");
-
-// Check connection
-if (mysqli_connect_errno())
-{
-    echo "<html><body><p>Failed to connect to MySQL: " . mysqli_connect_error()."</p></body></html>";
-    exit;
-}
-
 if ($returnval["status"] == "true"){ // check that route and bus exist
     
     //Create route data as array
@@ -114,13 +104,12 @@ else{
         }
         
         //Set up the seats
-        setUpSeats($con,$returnval,$bustype);
-        mysqli_close($con); // close the connection to the database
+        setUpSeats($returnval,$bustype);
         return $returnval;
     }
 
 //Creates a 2D array of seats with the number of rows and columns specified in bus type. Also sets which seats are in proximity
-    function setUpSeats($con,$instance,$btype) {
+    function setUpSeats($instance,$btype) {
         //Create the seats
         $numrows = $btype['No_of_rows'];
         $numcols = $btype['No_of_cols'];
