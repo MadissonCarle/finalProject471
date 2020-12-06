@@ -3,8 +3,13 @@ $IDs=array();
 //$found=0;
 function getEmpSeats($ID,$con){
     $sql="SELECT * FROM Passenger_seat 
-WHERE Employee_id ='".$ID."'";
-$results = mysqli_query($con, $sql);
+WHERE Employee_id =?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param('i',$ID);
+$stmt->execute();
+$results = $stmt->get_result();
+
+//$results = mysqli_query($con, $sql);
 if (mysqli_num_rows($results) < 1) {
 	echo "Employee ID is either incorrect or this employee has not taken any buses";
 	echo $ID;
@@ -35,7 +40,7 @@ if (mysqli_num_rows($results) < 1) {
 	echo "</table>";
     getAllProx($allInstances,$results,$con,$ID);
     
-    echo "<h1>All passengers that were in close proximity to contagious individual</h1>";
+    echo "<h1>All passengers that were in close proximity to contageous individual</h1>";
     getPassengers($con);
 }
 }
@@ -43,19 +48,25 @@ function getAllProx($allInstances, $results,$con,$ID){
     
     $i=0;
 	while($i<mysqli_num_rows($results)){
-		$sql2 ="SELECT * FROM in_proximity
+
+        $sql2 ="SELECT * FROM in_proximity
 				WHERE 
-				(Route_no_1='".$allInstances[$i]['Route_no']."'
-				AND Date_1='".$allInstances[$i]['Date']."'
-				AND Start_time_1='".$allInstances[$i]['Start_time']."'
-				AND Row_1='".$allInstances[$i]['Seat_row']."'
-				AND Column_1='".$allInstances[$i]['Seat_col']."') OR 
-				(Route_no_2='".$allInstances[$i]['Route_no']."'
-				AND Date_2='".$allInstances[$i]['Date']."'
-				AND Start_time_2='".$allInstances[$i]['Start_time']."'
-				AND Row_2='".$allInstances[$i]['Seat_row']."'
-				AND Column_2='".$allInstances[$i]['Seat_col']."') ";
-				$results2 = mysqli_query($con, $sql2);
+				(Route_no_1=?
+				AND Date_1=?
+				AND Start_time_1=?
+				AND Row_1=?
+				AND Column_1=?) OR 
+				(Route_no_2=?
+				AND Date_2=?
+				AND Start_time_2=?
+				AND Row_2=?
+				AND Column_2=?) ";
+        $stmt = $con->prepare($sql2);
+        
+        $stmt->bind_param('issiiissii',$allInstances[$i]['Route_no'], $allInstances[$i]['Date'],$allInstances[$i]['Start_time'],$allInstances[$i]['Seat_row'],$allInstances[$i]['Seat_col'],$allInstances[$i]['Route_no'], $allInstances[$i]['Date'],$allInstances[$i]['Start_time'],$allInstances[$i]['Seat_row'],$allInstances[$i]['Seat_col']);
+        
+        $stmt->execute();
+        $results2 = $stmt->get_result();
 		$i=$i+1;
 
 		if (mysqli_num_rows($results2) < 1) {
@@ -72,23 +83,26 @@ function getAllProx($allInstances, $results,$con,$ID){
 function getIDs($results2,$con,$ID){
     while( $row2 = mysqli_fetch_array($results2)){
 
-				$sql3="SELECT Employee_id FROM passenger_seat
+
+        $sql3="SELECT Employee_id FROM passenger_seat
 						WHERE
-						Employee_id <> '".$ID."'
+						Employee_id <> ?
 				AND
-				(Route_no='".$row2[0]."'
-				AND Date='".$row2[1]."'
-				AND Start_time='".$row2[2]."'
-				AND Seat_row='".$row2[3]."'
-				AND Seat_col='".$row2[4]."') OR 
-				(Route_no='".$row2[5]."'
-				AND Date='".$row2[6]."'
-				AND Start_time='".$row2[7]."'
-				AND Seat_row='".$row2[8]."'
-				AND Seat_col='".$row2[9]."') ";
-
-				$results3 = mysqli_query($con, $sql3);
-
+				(Route_no=?
+				AND Date=?
+				AND Start_time=?
+				AND Seat_row=?
+				AND Seat_col=?) OR 
+				(Route_no=?
+				AND Date=?
+				AND Start_time=?
+				AND Seat_row=?
+				AND Seat_col=?) ";
+        $stmt = $con->prepare($sql3);
+        
+        $stmt->bind_param('iissiiissii',$ID,$row2[0],$row2[1],$row2[2],$row2[3],$row2[4], $row2[5], $row2[6], $row2[7],$row2[8], $row2[9]);
+        $stmt->execute();
+        $results3 = $stmt->get_result();
 				if (mysqli_num_rows($results3) < 1) {
 					echo "No employees were in proximity";
 				} else {
@@ -110,8 +124,11 @@ function getPassengers($con){
     $i=0;
     $passengers=array();
     while($i<sizeof($IDs)){
-        $sql="SELECT * FROM passenger WHERE Employee_id='".$IDs[$i]."'";
-        $result=mysqli_query($con, $sql);
+        $sql="SELECT * FROM passenger WHERE Employee_id=?";
+         $stmt = $con->prepare($sql);
+        $stmt->bind_param('i',$IDs[$i]);
+        $stmt->execute();
+        $result = $stmt->get_result();
         while( $row = mysqli_fetch_array($result)){
             array_push($passengers,$row);
         }
@@ -149,7 +166,7 @@ echo "</table>";
 
 
 // Create connection
-$con=mysqli_connect("localhost","root","root","471project");
+$con=mysqli_connect("localhost","root","MyNewPass","471project");
 
 // Check connection
 if (mysqli_connect_errno())
@@ -159,10 +176,10 @@ if (mysqli_connect_errno())
 
 
 //step 1  
-echo "<h1>All trips taken by contagious passenger</h1>";
+echo "<h1>All trips taken by contageous passenger</h1>";
 getEmpSeats($ID,$con);
 
-echo '<form> <button class="button" type="submit"formaction="/finalProject471/website/adminMainView.php"> return to previous page</button></form>';
+echo '<form> <button class="button" type="submit"formaction="/finalProject471/website/adminMainView.php"> Return to previous page</button></form>';
 
 
 mysqli_close($con);

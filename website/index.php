@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,8 +20,9 @@
 <body>
     <form action="/index.php" method="get">
        
-        <button class="button" type="submit"formaction="/finalProject471/website/adminLogin.php"> Login as Admin</button>
+        <button class="button" type="submit"formaction="/finalProject471/website/LoginAdmin.php"> Login as Admin</button>
         <button class="button" type="submit"formaction="/finalProject471/website/busDriverLogin.php"> Login as Bus Driver</button>
         </form>
     </body>
 </html>
+

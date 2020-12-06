@@ -6,7 +6,7 @@
 
 
 // Create connection
-$con=mysqli_connect("localhost","root","root","471project");
+$con=mysqli_connect("localhost","root","MyNewPass","471project");
 
 // Check connection
 if (mysqli_connect_errno())
@@ -16,10 +16,13 @@ if (mysqli_connect_errno())
 
 
    
-    $sql="SELECT * FROM Passenger 
-    WHERE First_name ='".$First_name."'
-    AND Last_name='".$Last_name."'";
-    $results = mysqli_query($con, $sql);
+    $query="SELECT * FROM Passenger 
+    WHERE First_name =?
+    AND Last_name=?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param('is',$First_name,$Last_name);
+    $stmt->execute();
+    $results = $stmt->get_result();
      if (mysqli_num_rows($results) < 1) {
         echo "invalid employee name";
     } else {
@@ -43,7 +46,7 @@ if (mysqli_connect_errno())
 echo "</table>";
 
      }
-echo '<form> <button class="button" type="submit"formaction="/finalProject471/website/adminMainView.php"> return to previous page</button></form>';
+echo '<form> <button class="button" type="submit"formaction="/finalProject471/website/adminMainView.php">Return to previous page</button></form>';
 
 
 mysqli_close($con);

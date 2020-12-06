@@ -1,9 +1,9 @@
-<?php
+<?ph
 // Initialize the session
 session_start();
  
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] != true){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: adminLogin.php");
     exit;
 }
@@ -42,7 +42,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] != true){
    <button class="button" type="submit">Find Employee
     </button> 
 </form>
-<h1>Find employees that were in close proximity to a contagious individual by entering their ID</h1>
+<h1>Find employees that were in close proximity to a contageous individual by entering their ID</h1>
 <form action="searchProximity.php" method="post">
    Employee ID: <input type="text" name="EmployeeID" class="form-control"><br>
    <button class="button" type="submit">Find Employees
