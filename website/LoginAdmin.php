@@ -22,7 +22,6 @@
    Admin ID: <input type="text" name="AdminID"><br>
    Password: <input type="text" name="Password"><br>
    <button class="button" type="submit"formaction="/finalProject471/website/adminMainView.php"> Login </button>
-<!--    <input type="submit" value="Login">-->
 </form>
 </body>
 </html>
