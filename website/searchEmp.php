@@ -43,8 +43,35 @@ if (mysqli_connect_errno())
 echo "</table>";
 
      }
-echo '<form><input type="button" value="Return to previous page" onClick="javascript:history.go(-1)"></form>';
+echo '<form> <button class="button" type="submit"formaction="/finalProject471/website/adminMainView.php"> return to previous page</button></form>';
 
 
 mysqli_close($con);
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.button {
+  background-color: #58bee0;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+</style>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <style type="text/css">
+        body{ font: 14px sans-serif; }
+        .wrapper{ width: 500px; padding: 20px; }
+    </style>
+</head>
+</html>
