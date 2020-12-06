@@ -2,7 +2,7 @@
 
  $First_name = $_POST["FirstName"];
         $Last_name = $_POST["LastName"];
-echo $First_name. "<br>". $Last_name. "<br>";
+//echo $First_name. "<br>". $Last_name. "<br>";
 
 
 // Create connection
@@ -22,7 +22,6 @@ if (mysqli_connect_errno())
     $results = mysqli_query($con, $sql);
      if (mysqli_num_rows($results) < 1) {
         echo "invalid employee name";
-         echo '<form><input type="button" value="Return to previous page" onClick="javascript:history.go(-1)"></form>';
     } else {
          echo "<table border='1'>
 <tr>
@@ -42,9 +41,9 @@ if (mysqli_connect_errno())
     echo"</tr>";
         }
 echo "</table>";
- echo '<form><input type="button" value="Return to previous page" onClick="javascript:history.go(-1)"></form>';
-     }
 
+     }
+echo '<form><input type="button" value="Return to previous page" onClick="javascript:history.go(-1)"></form>';
 
 
 mysqli_close($con);
