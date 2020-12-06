@@ -5,6 +5,14 @@ $PASSWORD = $_POST["Password"];
 $ROUTENO = $_POST["Route_no"];
 $BUSNO = $_POST["bus_no"];
 
+//Create bus driver data as array
+$data = array ( 
+    'DriverID' => $DRIVERID,
+    'Password' => $PASSWORD
+);
+$url = 'verifyBusDriver.php';
+$returnval = sendReceiveJSONPOST($url,$data);
+
 // Create connection
 $con=mysqli_connect("localhost","root","root","471project");
 
@@ -15,33 +23,26 @@ if (mysqli_connect_errno())
     exit;
 }
 
-// Get the bus driver
-$query = "SELECT * FROM bus_driver where Driver_id=? AND Password =?";
-$stmt = $con->prepare($query);
-$stmt->bind_param('is',$DRIVERID,$PASSWORD);
-$stmt->execute();
-$result = $stmt->get_result();
+if ($returnval["status"] == "true"){ // check that route and bus exist
+    
+    //Create route data as array
+    $data = array ( 
+        'Route_no' => $ROUTENO
+    );
+    $url = 'verifyRoute.php';
+    $returnval = sendReceiveJSONPOST($url,$data);
 
-//Check if driver exists
-$thedriver = $result->fetch_assoc();
-if ($thedriver){ // check that route and bus exist
-    //Get the route data
-    $query = "SELECT * FROM route where Route_no=?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param('i',$ROUTENO);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $theroute = $result->fetch_assoc();
-
-    if($theroute){ // check that the bus exists
-        $query = "SELECT * FROM bus where Vehicle_id=?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('i',$BUSNO);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $thebus = $result->fetch_assoc();
-        if($thebus) { //everything exists, create a vaild route instance
-            $routeinstance = createRouteInstance($con,$thedriver,$theroute,$thebus);
+    if($returnval["status"] == "true"){ // check that the bus exists
+        
+        //Create bus data as array
+        $data = array ( 
+            'bus_no' => $BUSNO
+        );
+        $url = 'getBus.php';
+        $thebus = sendReceiveJSONPOST($url,$data);
+  
+        if($thebus["status"] == "true") { //everything exists, create a vaild route instance
+            $routeinstance = createRouteInstance($con,$DRIVERID,$ROUTENO,$thebus);
             
             // give this to another page and return
             session_start();
@@ -53,7 +54,7 @@ if ($thedriver){ // check that route and bus exist
             exit;
         }
         else {
-            echo "<p>Bus not found.</p>";
+            echo "<p>".$thebus["status"]."</p>";
             mysqli_close($con);
             echo "<form action=\"index.php\" method=\"post\">
                     <input type=\"submit\" value=\"Return to main page\">
@@ -61,7 +62,7 @@ if ($thedriver){ // check that route and bus exist
         }
     }
     else{
-        echo "<p>Route not found.</p>";
+        echo "<p>".$returnval["status"]."</p>";
         mysqli_close($con);
         echo "<form action=\"index.php\" method=\"post\">
                     <input type=\"submit\" value=\"Return to main page\">
@@ -69,7 +70,7 @@ if ($thedriver){ // check that route and bus exist
     }   
 }
 else{
-    echo "<p>Driver not found.</p>";
+    echo "<p>".$returnval["status"]."</p>";
     mysqli_close($con);
     echo "<form action=\"index.php\" method=\"post\">
                     <input type=\"submit\" value=\"Return to main page\">
@@ -85,13 +86,13 @@ else{
         date_default_timezone_set("America/Edmonton");
         $date = date("Y/m/d"); // get the date
         $time = date("H:i:s"); // get the current time
-        $stmt->bind_param("issii",$r['Route_no'],$date,$time,$d['Driver_id'],$b['Vehicle_id']); // add the values
+        $stmt->bind_param("issii",$r,$date,$time,$d,$b['Vehicle_id']); // add the values
         $stmt->execute(); // creates the route instance
         
         //Grab the new route instance
         $query = "SELECT * FROM route_instance where Route_no=? AND Date=? AND Start_time=?";
         $stmt = $con->prepare($query);
-        $stmt->bind_param('iss',$r['Route_no'],$date,$time);
+        $stmt->bind_param('iss',$r,$date,$time);
         $stmt->execute();
         $result = $stmt->get_result();
         $newinstance = $result->fetch_assoc();
@@ -167,7 +168,22 @@ else{
 		}
     }
         
+    function sendReceiveJSONPOST($url,$data) {
+        $data = http_build_query($data);
+        $options = array(
+          'http' => array(
+            'method'  => 'POST',
+              'header' =>  "Content-type: application/x-www-form-urlencoded\r\n"."Content-Length: " . strlen($data) . "\r\n",
+                'content' => $data
+            
+            )
+        );
 
+        $context  = stream_context_create( $options );
+        $result = file_get_contents('http://localhost/finalProject471/website/'.$url, false, $context );
+        $response = json_decode( $result, true );
+        return $response;
+    }
 
 ?>
 
