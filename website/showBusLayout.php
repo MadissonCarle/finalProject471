@@ -8,35 +8,35 @@
     $DATE = $_SESSION["Date"];
     $STARTTIME = $_SESSION["Start_time"];
     
-    // Create connection
-    $con=mysqli_connect("localhost","root","root","471project");
-
-    // Check connection
-    if (mysqli_connect_errno())
-    {
-        echo "<html><body><p>Failed to connect to MySQL: " . mysqli_connect_error()."</p></body></html>";
-        exit;
-    }
-    
     //Get the seats and passenger seats and display
-    $query = "SELECT * FROM seat where Route_no=? AND Date=? AND Start_time=?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param('iss',$ROUTENO,$DATE,$STARTTIME);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    //Create route data as array
+    $data = array ( 
+        'Route_no' => $ROUTENO,
+        'Date' => $DATE,
+        'Start_time' => $STARTTIME
+    );
+    $url = 'getSeatOnRouteInstance.php';
+    $returnval = sendReceiveJSONPOST($url,$data);
     
     $array = array(); //according to the internet these are automatically resized to 2d if needed
     
+    $count = 0;
+    
     //for each seat, check if it is occupied
-    while($row = $result->fetch_assoc()) {
-        $query = "SELECT * FROM passenger_seat where Route_no=? AND Date=? AND Start_time=? AND Seat_row=? AND Seat_col=?";
-        $stmt = $con->prepare($query);
-        $seatrow = $row['Row'];
-        $seatcol = $row['Column'];
-        $stmt->bind_param('issii',$ROUTENO,$DATE,$STARTTIME,$seatrow,$seatcol);
-        $stmt->execute();
-        $result2 = $stmt->get_result();
-        if($result2->fetch_assoc()) { // there's a passenger here
+    while($count < $returnval["TupleCount"]) {
+        $seatrow = $returnval['Tuples'][$count]['Row'];
+        $seatcol = $returnval['Tuples'][$count]['Column'];
+        $data = array ( 
+            'Route_no' => $ROUTENO,
+            'Date' => $DATE,
+            'Start_time' => $STARTTIME,
+            'Seat_row' => $seatrow,
+            'Seat_col' => $seatcol
+        );
+        $url = 'getPassengerSeat.php';
+        $row = sendReceiveJSONPOST($url,$data);
+
+        if($row["status"] == 'true') { // there's a passenger here
             if (isset($_SESSION["Row"]) && isset($_SESSION["Col"]) && $_SESSION["Row"] == $seatrow && $_SESSION["Col"] == $seatcol) { // this is the last employee added
                 $array[$seatrow -1 ][$seatcol -1] = 3; // taken by last employee
             }
@@ -47,8 +47,8 @@
         else { // the seat is free
             $array[$seatrow -1 ][$seatcol -1] = 2; // free
         }
+        $count += 1;
     }
-    mysqli_close($con);
     echo "<h3>Seat Map for Route ".$ROUTENO." (Date: ".$DATE.", Start Time: ".$STARTTIME.")</h3>";
     echo "<h4>Key: Grey = aisle, Red = occupied, Green = unoccupied</h4>";
     if (isset($_SESSION["Row"]) && isset($_SESSION["Col"])) { // if we've returned from trying to assign a seat to an employee
@@ -119,3 +119,23 @@
 
 </body>
 </html>
+
+<?php
+    // Sends data as POST to the form at $url, receives and decodes the JSON response as an array.
+    function sendReceiveJSONPOST($url,$data) {
+        $data = http_build_query($data);
+        $options = array(
+          'http' => array(
+            'method'  => 'POST',
+              'header' =>  "Content-type: application/x-www-form-urlencoded\r\n"."Content-Length: " . strlen($data) . "\r\n",
+                'content' => $data
+            
+            )
+        );
+
+        $context  = stream_context_create( $options );
+        $result = file_get_contents('http://localhost/finalProject471/website/'.$url, false, $context );
+        $response = json_decode( $result, true );
+        return $response;
+    }
+?>
