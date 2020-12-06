@@ -82,56 +82,65 @@ else{
 <?php
 // Creates a route instance with the correct seat layout for the bus and the current date and time. Also sets the seats that are in proximity correctly.
     function createRouteInstance($con,$d,$r,$b) {
-        $stmt =$con->prepare("INSERT INTO route_instance (Route_no, Date, Start_time, Driver_id, Vehicle_id) VALUES (?, ?, ?, ?,?)");
-        date_default_timezone_set("America/Edmonton");
-        $date = date("Y/m/d"); // get the date
-        $time = date("H:i:s"); // get the current time
-        $stmt->bind_param("issii",$r,$date,$time,$d,$b['Vehicle_id']); // add the values
-        $stmt->execute(); // creates the route instance
+        //Create data for route instance as array
+        $data = array ( 
+            'Route_no' => $r,
+            'Vehicle_id' => $b["Vehicle_id"],
+            'DriverID' => $d
+        );
+        $url = 'insertRouteInstance.php';
+        $returnval = sendReceiveJSONPOST($url,$data); // this is the route instance
         
-        //Grab the new route instance
-        $query = "SELECT * FROM route_instance where Route_no=? AND Date=? AND Start_time=?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('iss',$r,$date,$time);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $newinstance = $result->fetch_assoc();
+        if($returnval["status"] != 'true') {
+            echo "<p>".$returnval["status"]."</p>";
+            echo "<form action=\"index.php\" method=\"post\">
+                    <input type=\"submit\" value=\"Return to main page\">
+                    </form>";
+            exit;
+        }
         
-        //Grab the bus type to set up the the seats:
-        $query = "SELECT * FROM bus_type where Model_no=?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('i',$b['Model_no']);
-        $stmt->execute();
-        $result2 = $stmt->get_result();
-        $bustype = $result2->fetch_assoc();
+        //Grab the bus_type
+        $data = array ( 
+            'Model_no' => $b["Model_no"],
+        );
+        $url = 'getBusType.php';
+        $bustype = sendReceiveJSONPOST($url,$data);
+         if($bustype["status"] != 'true') {
+            echo "<p>".$bustype["status"]."</p>";
+            echo "<form action=\"index.php\" method=\"post\">
+                    <input type=\"submit\" value=\"Return to main page\">
+                    </form>";
+            exit;
+        }
         
         //Set up the seats
-        setUpSeats($con,$newinstance,$bustype);
+        setUpSeats($con,$returnval,$bustype);
         mysqli_close($con); // close the connection to the database
-        return $newinstance;
+        return $returnval;
     }
 
 //Creates a 2D array of seats with the number of rows and columns specified in bus type. Also sets which seats are in proximity
     function setUpSeats($con,$instance,$btype) {
-        
-        echo "<p>" . $instance['Route_no'] . "</p>";
-         echo "<p>" . $btype['No_of_rows'] . "</p>";
-        echo "<p>" . $btype['No_of_cols'] . "</p>";
-        
         //Create the seats
         $numrows = $btype['No_of_rows'];
         $numcols = $btype['No_of_cols'];
         $routeno = $instance['Route_no'];
         $date = $instance['Date'];
         $time = $instance['Start_time'];
-        echo "<p>" . $date . "</p>";
-        echo "<p>" . $time . "</p>";
         
+        
+        // Creat an array of seats
         for($i=1; $i <= $numrows; $i+=1) {
             for($j=1; $j <= $numcols; $j+=1) {
-                $stmt =$con->prepare("INSERT INTO seat VALUES (?, ?, ?, ?, ?)");
-                $stmt->bind_param('issii',$routeno,$date,$time,$i,$j); // add the values
-                $stmt->execute(); // creates the seat
+                $data = array ( 
+                    'Route_no' => $routeno,
+                    'Date' => $date,
+                    'Start_time' => $time,
+                    'Row' => $i,
+                    'Column' => $j
+                );
+                $url = 'insertSeat.php';
+                sendReceiveJSONPOST($url,$data);
             }
         }
         
@@ -139,35 +148,68 @@ else{
 		for($i=1; $i <= $numrows; $i+=1) {
 			for($j=1; $j <= $numcols; $j+=1) {
 				if($j!=$numcols) {// insert proximity to seat on the right if it exists
-					$stmt =$con->prepare("INSERT INTO in_proximity (Route_no_1, Date_1, Start_time_1, Row_1, Column_1, Route_no_2, Date_2, Start_time_2, Row_2, Column_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     $col = $j +1;
-                    $stmt->bind_param('issiiissii',$routeno,$date,$time,$i,$j,$routeno,$date,$time,$i,$col); // add the values
-                    $stmt->execute();
+                    $data = array ( 
+                        'Route_no' => $routeno,
+                        'Date' => $date,
+                        'Start_time' => $time,
+                        'Row1' => $i,
+                        'Column1' => $j,
+                        'Row2' => $i,
+                        'Column2' => $col
+                    );
+                    $url = 'insertInProximity.php';
+                    sendReceiveJSONPOST($url,$data);
                 }
 				if($i!=$numrows) { // insert proximity to seat directly below if it exists
-					$stmt =$con->prepare("INSERT INTO in_proximity (Route_no_1, Date_1, Start_time_1, Row_1, Column_1, Route_no_2, Date_2, Start_time_2, Row_2, Column_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     $row = $i + 1;
-                    $stmt->bind_param('issiiissii',$routeno,$date,$time,$i,$j,$routeno,$date,$time,$row,$j); // add the values
-                    $stmt->execute();
+                    $data = array ( 
+                        'Route_no' => $routeno,
+                        'Date' => $date,
+                        'Start_time' => $time,
+                        'Row1' => $i,
+                        'Column1' => $j,
+                        'Row2' => $row,
+                        'Column2' => $j
+                    );
+                    $url = 'insertInProximity.php';
+                    sendReceiveJSONPOST($url,$data);
                 }
 				if($i!=$numrows && $j!=$numcols) { // insert proximity to seat diagonally right down if it exists
-					$stmt =$con->prepare("INSERT INTO in_proximity (Route_no_1, Date_1, Start_time_1, Row_1, Column_1, Route_no_2, Date_2, Start_time_2, Row_2, Column_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     $row = $i + 1;
                     $col = $j +1;
-                    $stmt->bind_param('issiiissii',$routeno,$date,$time,$i,$j,$routeno,$date,$time,$row,$col); // add the values
-                    $stmt->execute();
+                    $data = array ( 
+                        'Route_no' => $routeno,
+                        'Date' => $date,
+                        'Start_time' => $time,
+                        'Row1' => $i,
+                        'Column1' => $j,
+                        'Row2' => $row,
+                        'Column2' => $col
+                    );
+                    $url = 'insertInProximity.php';
+                    sendReceiveJSONPOST($url,$data);
                 }
 				if($j!=$numcols && ($i-1) > 0) { // insert proximity to seat diagonal right up if it exists
-					$stmt =$con->prepare("INSERT INTO in_proximity (Route_no_1, Date_1, Start_time_1, Row_1, Column_1, Route_no_2, Date_2, Start_time_2, Row_2, Column_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     $row = $i - 1;
                     $col = $j +1;
-                    $stmt->bind_param('issiiissii',$routeno,$date,$time,$i,$j,$routeno,$date,$time,$row,$col); // add the values
-                    $stmt->execute();
+                    $data = array ( 
+                        'Route_no' => $routeno,
+                        'Date' => $date,
+                        'Start_time' => $time,
+                        'Row1' => $i,
+                        'Column1' => $j,
+                        'Row2' => $row,
+                        'Column2' => $col
+                    );
+                    $url = 'insertInProximity.php';
+                    sendReceiveJSONPOST($url,$data);
                 }
 			}
 		}
     }
-        
+    
+// Sends data as POST to the form at $url, receives and decodes the JSON response as an array.
     function sendReceiveJSONPOST($url,$data) {
         $data = http_build_query($data);
         $options = array(
