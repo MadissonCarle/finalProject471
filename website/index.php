@@ -24,3 +24,10 @@
         </form>
     </body>
 </html>
+
+<?php
+    session_start();
+    //Unset all the session variables
+    $_SESSION = array();
+    session_destroy(); // get rid of everything in the session
+?>

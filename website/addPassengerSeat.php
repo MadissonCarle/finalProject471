@@ -5,16 +5,6 @@
     $DATE = $_SESSION["Date"];
     $STARTTIME = $_SESSION["Start_time"];
 
-     // Create connection
-    $con=mysqli_connect("localhost","root","root","471project");
-
-    // Check connection
-    if (mysqli_connect_errno())
-    {
-        echo "<html><body><p>Failed to connect to MySQL: " . mysqli_connect_error()."</p></body></html>";
-        exit;
-    }
-
     $EMPID = $_POST["EmployeeID"];
 
     // Find the first free seat and assign it
@@ -25,12 +15,12 @@
         $_SESSION["Row"] = -1;
         $_SESSION["Col"] = -1;
         $_SESSION["Employee"] = -1;
-        returnToBusLayout($con);
+        returnToBusLayout();
     }
     //Check if the employee already has a seat
     $empHasSeat = hasSeat($ROUTENO,$DATE,$STARTTIME,$EMPID);
     if($empHasSeat) {
-        returnToBusLayout($con);
+        returnToBusLayout();
     }
     
     //Get the seats on this route instance
@@ -88,22 +78,21 @@
         $_SESSION["Row"] = $goodrow;
         $_SESSION["Col"] = $goodcol;
         $_SESSION["Employee"] = $EMPID;
-        returnToBusLayout($con);
+        returnToBusLayout();
     }
     
     //Set a board location and time
-    setBoardsAt($con,$ROUTENO,$EMPID);
+    setBoardsAt($ROUTENO,$EMPID);
    
     // Set the row and column
     $_SESSION["Row"] = $goodrow;
     $_SESSION["Col"] = $goodcol;
     $_SESSION["Employee"] = $EMPID;
-    returnToBusLayout($con);
+    returnToBusLayout();
 ?>
 
 <?php
-    function returnToBusLayout($con) {
-        mysqli_close($con);
+    function returnToBusLayout() {
         $redirect =  "Location: showBusLayout.php"; // go back to previous page
         header($redirect);
         exit;
@@ -142,7 +131,7 @@
         return false;
     }
 
-    function setBoardsAt($con,$ROUTENO,$EMPID) {
+    function setBoardsAt($ROUTENO,$EMPID) {
         //get a location that the bus stops at
         $data = array ( 
             'Route_no' => $ROUTENO,

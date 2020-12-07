@@ -1,5 +1,5 @@
 <?php
-    /* Gets all the seats for a specified route instance.
+    /* Gets all the passenger seats for a specified route instance.
         Inputs:
         $_POST["Route_no"] is the route number
         $_POST["Date"] is the date
@@ -9,21 +9,22 @@
         {
     "Route_no": "2",
     "Date": "2020/12/06",
-    "Start_time": "15:23:55",
+    "Start_time": "19:48:15",
     "Tuples": [
         {
-            "Row": 3,
-            "Column": 1
+            "Seat_row": 1,
+            "Seat_col": 1,
+            "Employee_id": 10
         },
         {
-            "Row": 4,
-            "Column": 1
+            "Seat_row": 4,
+            "Seat_col": 1,
+            "Employee_id": 12
         }
     ],
     "TupleCount": 2,
     "status": "true"
 }
-        
    */
     $ROUTENO = $_POST["Route_no"];
     $DATE = $_POST["Date"];
@@ -44,7 +45,7 @@ if (mysqli_connect_errno())
 }
 
 //Get the seats
-$query = "SELECT * FROM seat where Route_no=? AND Date=? AND Start_time=?";
+$query = "SELECT * FROM passenger_seat where Route_no=? AND Date=? AND Start_time=?";
 $stmt = $con->prepare($query);
 $stmt->bind_param('iss',$ROUTENO,$DATE,$STARTTIME);
 $stmt->execute();
@@ -61,8 +62,9 @@ $i = 0;
 while ($row = $result->fetch_assoc() ) {
     global $i, $json;
     $tuple = array();
-    $tuple['Row'] = $row['Row'];
-    $tuple['Column'] = $row['Column'];
+    $tuple['Seat_row'] = $row['Seat_row'];
+    $tuple['Seat_col'] = $row['Seat_col'];
+    $tuple['Employee_id'] = $row['Employee_id'];
     $json['Tuples'][$i] = $tuple;
     $i+=1;
 }
@@ -76,7 +78,7 @@ if($i != 0) { // there are rows in the table
 }
 else{
     global $status, $json;
-    $status = "No seats found on this route instance.";
+    $status = "No passenger seats found on this route instance.";
     $json["TupleCount"] = $i;
 }
 
