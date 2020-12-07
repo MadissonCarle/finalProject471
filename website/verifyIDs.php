@@ -1,4 +1,7 @@
 <?php
+/*
+finds the IDs of people that were in proximity of individual
+*/
 $row2=$_POST["row"];
 
 // Create connection
@@ -15,6 +18,7 @@ if (mysqli_connect_errno())
     exit;
 }
 
+//query
 $sql3="SELECT Employee_id FROM passenger_seat
 						WHERE
 						Employee_id <> ?
@@ -40,7 +44,7 @@ $json=array();
 $json['Tuples']=array();
 
 $i=0;
-
+//add all found information to an array to be used by caller
 while ($row = $result->fetch_assoc() ) {
     global  $json;
     $tuple = array();
@@ -52,7 +56,7 @@ mysqli_close($con); // close the connection to the database
 global $status;   
 $status = -1;
 
-if($i != 0) { //if the driver exists
+if($i != 0) { //if proximity passengers exists
     global $status, $json;
     $status = "true";
     $json["TupleCount"]=$i;

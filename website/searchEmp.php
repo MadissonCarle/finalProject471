@@ -1,5 +1,7 @@
 <?php
-
+/*
+Finds employee information through a provided name
+*/
  $First_name = $_POST["FirstName"];
  $Last_name = $_POST["LastName"];
 
@@ -8,6 +10,7 @@ $data = array (
     "FirstName" => $First_name,
     "LastName" => $Last_name
 );
+//query
 $url = 'verifyEmp.php';
 $returnval = sendReceiveJSONPOST($url,$data);
 
@@ -24,9 +27,8 @@ if (mysqli_connect_errno())
 }
 
 
-
 if ($returnval["status"] == "true"){ // check that emp exist
-
+//output table of their information
    echo "<table border='1'>
 <tr>
 <th>ID</th>

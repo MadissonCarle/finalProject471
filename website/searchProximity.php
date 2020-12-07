@@ -1,14 +1,20 @@
 <?php
 $IDs=array();
-//$found=0;
+/*
+USes the provided ID to find trips that they were on and then uses this information to find people that were in close proximity to that individaul 
+*/
+
+//main function that uses the ID to get results
 function getEmpSeats($ID,$con){
+    //getting seats for specified employee
     $url = 'verifyEmpSeats.php';
     global $data;
-$returnval = sendReceiveJSONPOST($url,$data);
+    $returnval = sendReceiveJSONPOST($url,$data);
 
 
-
+//if seats were found for ID
 if ($returnval["status"] == "true") {
+    //print out all trips
 	echo "<table border='1'>
 	<tr>
 	<th>Route_no</th>
@@ -35,9 +41,12 @@ if ($returnval["status"] == "true") {
         $i=$i+1;
 	}
 	echo "</table>";
+    
+    //find IDs of people in proximity
     getAllProx($allInstances,$returnval,$con,$ID);
     
     echo "<h1>All passengers that were in close proximity to contageous individual</h1>";
+    //gets in proximity individuals information 
     getPassengers($con);
 } else {
 	echo "<p>".$returnval["status"]."</p>";
@@ -48,6 +57,8 @@ if ($returnval["status"] == "true") {
 }
    
 }
+
+//finding the route info of all tripe that were in close proximity
 function getAllProx($allInstances, $returnval ,$con,$ID){
     $i=0;
     
@@ -56,13 +67,11 @@ function getAllProx($allInstances, $returnval ,$con,$ID){
         $url='getProx.php';
         $returnval = sendReceiveJSONPOST($url,$data);
 		$i=$i+1;
-
+        //if any people were found in proximity
 		if ($returnval["status"] == "true") {
             $found=1;
              
 			getIDs($returnval,$con,$ID);
-           
-           
             
 		} else {
             
@@ -74,17 +83,18 @@ function getAllProx($allInstances, $returnval ,$con,$ID){
 
 }
 
+//get the IDs for trips 
 function getIDs($results2,$con,$ID){
     $j=0;
     while($j<$results2["TupleCount"]){
        
         $row2=$results2["Tuples"][$j];
-       
+        //query
         $data =array("row"=>$row2);
         $url='verifyIDs.php';
         $returnval=sendReceiveJSONPOST($url,$data);
          
-        
+        //IDs of people that were close found
 				if ($returnval["status"] == "true") {
                     $i=0;
 					while( $i<$returnval["TupleCount"]){
@@ -108,15 +118,17 @@ function getIDs($results2,$con,$ID){
 				}
 }
 
+//get passenger information based on IDs
 function getPassengers($con){
     global $IDs;
     $i=0;
    
 
     $passengers=array();
+    //all IDs
     while($i<sizeof($IDs)){
+        //query
         $data = array("IDs"=>$IDs,"count"=> $i);
-
         $url='getProxPass.php';
         $returnval = sendReceiveJSONPOST($url,$data);
 
@@ -129,6 +141,7 @@ function getPassengers($con){
         
       $i=$i+1;  
     }
+    //output resulting passenger info
      echo "<table border='1'>
 <tr>
 <th>ID</th>
@@ -154,7 +167,8 @@ echo "</table>";
 
 
 <?php
-
+/* controller for proximity information
+*/
 $ID = $_POST["EmployeeID"];
 global $data;
 $data= array(
@@ -177,7 +191,7 @@ if (mysqli_connect_errno())
 }
 
 
-//step 1  
+//step 1 getting all seats of specified ID 
 echo "<h1>All trips taken by contageous passenger</h1>";
 getEmpSeats($ID,$con);
 

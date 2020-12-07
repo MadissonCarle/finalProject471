@@ -1,4 +1,6 @@
 <?php
+/*Finds seats an employee was in for each route instance they took based on theri ID
+*/
 $ID = $_POST["EmployeeID"];
 
 // Create connection
@@ -15,6 +17,7 @@ if (mysqli_connect_errno())
     exit;
 }
 
+//query
  $sql="SELECT * FROM Passenger_seat 
 WHERE Employee_id =?";
 $stmt = $con->prepare($sql);
@@ -27,6 +30,7 @@ $json['Tuples']=array();
 global $i;
 $i=0;
 
+//add all inforamtion to an array to be used by caller
 while ($row = $theSeats->fetch_assoc() ) {
     global $i, $json;
     $tuple = array();
@@ -44,7 +48,7 @@ mysqli_close($con); // close the connection to the database
 global $status;   
 $status = -1;
 
-if($i != 0) { //if the driver exists
+if($i != 0) { //if seats were found
     global $status, $json;
     $status = "true";
     $json["TupleCount"]=$i;
@@ -52,7 +56,7 @@ if($i != 0) { //if the driver exists
 }
 else{
     global $status,$json;
-    $status = "Passenger not found.";
+    $status = "Passenger not found on any buses";
      $json["TupleCount"]=$i;
 }
 

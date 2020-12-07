@@ -30,7 +30,8 @@ if (mysqli_connect_errno())
 }
 
 
-if ($returnval["status"] == "true"){ // check that route and bus exist
+//if admin exists
+if ($returnval["status"] == "true"){ 
      // Password is correct, so start a new session
     session_start();
                             

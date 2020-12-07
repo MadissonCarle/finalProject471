@@ -1,4 +1,7 @@
 <?php
+/*
+finds all in_proximity instances for specified case
+*/
 $allInstances=$_POST["allInstances"];
 $i=$_POST["count"];
 
@@ -40,6 +43,7 @@ $json['Tuples']=array();
 global $j;
 $j=0;
 
+//populating Tuple array to be returned and used by caller
 while ($row = $result->fetch_assoc() ) {
     global $j, $json;
     $tuple = array();
@@ -60,7 +64,7 @@ mysqli_close($con); // close the connection to the database
 global $status;   
 $status = -1;
 
-if($j != 0) { //if the driver exists
+if($j != 0) { //if in_proximity cases exists
     global $status, $json;
     $status = "true";
     $json["TupleCount"]=$j;
@@ -68,7 +72,7 @@ if($j != 0) { //if the driver exists
 }
 else{
     global $status,$json;
-    $status = "Nothing";
+    $status = "No passengers in close proximity";
      $json["TupleCount"]=$j;
 }
 

@@ -1,4 +1,6 @@
 <?php
+/*gets all passengers in proximity
+*/
 $IDs =$_POST["IDs"];
 $i=$_POST["count"];
 
@@ -17,6 +19,7 @@ if (mysqli_connect_errno())
     exit;
 }
 
+//query
  $sql="SELECT * FROM passenger WHERE Employee_id=?";
          $stmt = $con->prepare($sql);
         $stmt->bind_param('i',$IDs[$i]);
@@ -28,6 +31,7 @@ $json['Tuples']=array();
 global $j;
 $j=0;
 
+//adding all passengers to array to be used by caller
 while ($row = $result->fetch_assoc() ) {
     global $j, $json;
     $tuple = array();
@@ -43,7 +47,7 @@ mysqli_close($con); // close the connection to the database
 global $status;   
 $status = -1;
 
-if($j != 0) { //if the driver exists
+if($j != 0) { //if the passengers exist
     global $status, $json;
     $status = "true";
     $json["TupleCount"]=$j;

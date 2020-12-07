@@ -1,4 +1,6 @@
 <?php
+/*Finds employees by their first and last name
+*/
 $First_name = $_POST["FirstName"];
  $Last_name = $_POST["LastName"];
 
@@ -16,7 +18,7 @@ if (mysqli_connect_errno())
     exit;
 }
 
-   
+   //query
     $query="SELECT * FROM Passenger 
     WHERE First_name =?
     AND Last_name=?";
@@ -32,6 +34,7 @@ $json['Tuples']=array();
 global $i;
 $i=0;
 
+//add all info to an array to be used by caller
 while ($row = $theEmp->fetch_assoc() ) {
     global $i, $json;
     $tuple = array();
@@ -47,7 +50,7 @@ mysqli_close($con); // close the connection to the database
 global $status;   
 $status = -1;
 
-if($i != 0) { //if the driver exists
+if($i != 0) { //if the employee exists
     global $status, $json;
     $status = "true";
     $json["TupleCount"]=$i;
@@ -55,7 +58,7 @@ if($i != 0) { //if the driver exists
 }
 else{
     global $status,$json;
-    $status = "Passenger not found.";
+    $status = "Employee not found.";
      $json["TupleCount"]=$i;
 }
 
