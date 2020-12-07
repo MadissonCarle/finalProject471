@@ -5,8 +5,9 @@
 $ADMINID = $_POST["AdminID"];
 $PASSWORD = $_POST["Password"];
 
+include_once "config.php";
 // Create connection
-$con=mysqli_connect("localhost","root","MyNewPass","471project");
+$con=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,"471project");
 
 // Check connection
 if (mysqli_connect_errno())

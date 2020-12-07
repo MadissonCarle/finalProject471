@@ -5,7 +5,7 @@ USes the provided ID to find trips that they were on and then uses this informat
 */
 
 //main function that uses the ID to get results
-function getEmpSeats($ID,$con){
+function getEmpSeats($ID){
     //getting seats for specified employee
     $url = 'verifyEmpSeats.php';
     global $data;
@@ -43,23 +43,19 @@ if ($returnval["status"] == "true") {
 	echo "</table>";
     
     //find IDs of people in proximity
-    getAllProx($allInstances,$returnval,$con,$ID);
+    getAllProx($allInstances,$returnval,$ID);
     
-    echo "<h1>All passengers that were in close proximity to contageous individual</h1>";
+    echo "<h1>All passengers that were in close proximity to contagious individual</h1>";
     //gets in proximity individuals information 
-    getPassengers($con);
+    getPassengers($ID);
 } else {
 	echo "<p>".$returnval["status"]."</p>";
-    mysqli_close($con);
-    echo "<form action=\"index.php\" method=\"post\">
-                    <input type=\"submit\" value=\"Return to main page\">
-                    </form>";
 }
    
 }
 
-//finding the route info of all tripe that were in close proximity
-function getAllProx($allInstances, $returnval ,$con,$ID){
+//finding the route info of all trips that were in close proximity
+function getAllProx($allInstances, $returnval,$ID){
     $i=0;
     
 	while($i<$returnval["TupleCount"]){
@@ -71,7 +67,7 @@ function getAllProx($allInstances, $returnval ,$con,$ID){
 		if ($returnval["status"] == "true") {
             $found=1;
              
-			getIDs($returnval,$con,$ID);
+			getIDs($returnval,$ID);
             
 		} else {
             
@@ -84,13 +80,13 @@ function getAllProx($allInstances, $returnval ,$con,$ID){
 }
 
 //get the IDs for trips 
-function getIDs($results2,$con,$ID){
+function getIDs($results2,$ID){
     $j=0;
     while($j<$results2["TupleCount"]){
        
         $row2=$results2["Tuples"][$j];
         //query
-        $data =array("row"=>$row2);
+        $data =array("row"=>$row2, "ID"=>$ID);
         $url='verifyIDs.php';
         $returnval=sendReceiveJSONPOST($url,$data);
          
@@ -104,22 +100,13 @@ function getIDs($results2,$con,$ID){
                         
                         $i=$i+1;
                     }
-				} else {
-					
-                        echo "<p>".$returnval["status"]."</p>";
-                        //mysqli_close($con);
-                        echo "<form action=\"index.php\" method=\"post\">
-                    <input type=\"submit\" value=\"Return to main page\">
-                    </form>";
-					
-						
-					}
+				} 
 					$j=$j+1;
 				}
 }
 
 //get passenger information based on IDs
-function getPassengers($con){
+function getPassengers($ID){
     global $IDs;
     $i=0;
    
@@ -128,6 +115,7 @@ function getPassengers($con){
     //all IDs
     while($i<sizeof($IDs)){
         //query
+       if($IDs[$i]!=$ID) {
         $data = array("IDs"=>$IDs,"count"=> $i);
         $url='getProxPass.php';
         $returnval = sendReceiveJSONPOST($url,$data);
@@ -138,7 +126,7 @@ function getPassengers($con){
              array_push($passengers,$row);
             $j=$j+1;
         }
-        
+        }
       $i=$i+1;  
     }
     //output resulting passenger info
@@ -180,25 +168,13 @@ $returnval = sendReceiveJSONPOST($url,$data);
 
 session_start();
 
-// Create connection
-$con=mysqli_connect("localhost","root","MyNewPass","471project");
-
-// Check connection
-if (mysqli_connect_errno())
-{
-	echo "<html><body><p>Failed to connect to MySQL: " . mysqli_connect_error()."</p></body></html>";
-    exit;
-}
-
-
 //step 1 getting all seats of specified ID 
-echo "<h1>All trips taken by contageous passenger</h1>";
-getEmpSeats($ID,$con);
+echo "<h1>All trips taken by contagious passenger</h1>";
+getEmpSeats($ID);
 
 echo '<form> <button class="button" type="submit"formaction="/finalProject471/website/adminMainView.php"> Return to previous page</button></form>';
 
 
-mysqli_close($con);
 ?>
 
 <?php
