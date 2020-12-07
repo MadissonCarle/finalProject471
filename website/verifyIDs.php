@@ -3,9 +3,12 @@
 finds the IDs of people that were in proximity of individual
 */
 $row2=$_POST["row"];
+//$row2=array("Route_no_1" => 1, "Date_1" => "2020/12/08 ","Start_time_1" =>" 08:00:00 ","Row_1" => 1 ,"Column_1" => 1, "Route_no_2" => 1, "Date_2" => "2020/12/08", "Start_time_2" => "08:00:00" ,"Row_2" => 1, "Column_2"=> 2);
+
+require_once "config.php";
 
 // Create connection
-$con=mysqli_connect("localhost","root","MyNewPass","471project");
+$con=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,"471project");
 
 // Check connection
 if (mysqli_connect_errno())

@@ -89,6 +89,7 @@ function getIDs($results2,$con,$ID){
     while($j<$results2["TupleCount"]){
        
         $row2=$results2["Tuples"][$j];
+        print_r($row2);
         //query
         $data =array("row"=>$row2);
         $url='verifyIDs.php';
@@ -180,8 +181,10 @@ $returnval = sendReceiveJSONPOST($url,$data);
 
 session_start();
 
+require_once "config.php";
+
 // Create connection
-$con=mysqli_connect("localhost","root","MyNewPass","471project");
+$con=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,"471project");
 
 // Check connection
 if (mysqli_connect_errno())
