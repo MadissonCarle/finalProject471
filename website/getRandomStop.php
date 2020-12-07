@@ -6,8 +6,10 @@
    */
     $ROUTENO = $_POST["Route_no"];
 
-    // Create connection
-$con=mysqli_connect("localhost","root","root","471project");
+require_once "config.php";
+
+// Create connection
+$con=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,"471project");
 
 // Check connection
 if (mysqli_connect_errno())
@@ -29,7 +31,7 @@ if (mysqli_connect_errno())
 mysqli_close($con); // close the connection to the database
 $status = -1;
 $json=array();
-if($row = $result->fetch_assoc()) { //if the bus type exists
+if($row = $result->fetch_assoc()) { //if the route stops somewhere
     global $status, $json;
     $status = "true";
     $json['Address'] = $row['Address'];

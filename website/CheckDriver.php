@@ -32,7 +32,7 @@ if ($returnval["status"] == "true"){ // check that route and bus exist
         $thebus = sendReceiveJSONPOST($url,$data);
   
         if($thebus["status"] == "true") { //everything exists, create a vaild route instance
-            $routeinstance = createRouteInstance($con,$DRIVERID,$ROUTENO,$thebus);
+            $routeinstance = createRouteInstance($DRIVERID,$ROUTENO,$thebus);
             
             // give this to another page and return
             session_start();
@@ -45,7 +45,6 @@ if ($returnval["status"] == "true"){ // check that route and bus exist
         }
         else {
             echo "<p>".$thebus["status"]."</p>";
-            mysqli_close($con);
             echo "<form action=\"index.php\" method=\"post\">
                     <input type=\"submit\" value=\"Return to main page\">
                     </form>";
@@ -53,7 +52,6 @@ if ($returnval["status"] == "true"){ // check that route and bus exist
     }
     else{
         echo "<p>".$returnval["status"]."</p>";
-        mysqli_close($con);
         echo "<form action=\"index.php\" method=\"post\">
                     <input type=\"submit\" value=\"Return to main page\">
                     </form>";
@@ -61,7 +59,6 @@ if ($returnval["status"] == "true"){ // check that route and bus exist
 }
 else{
     echo "<p>".$returnval["status"]."</p>";
-    mysqli_close($con);
     echo "<form action=\"index.php\" method=\"post\">
                     <input type=\"submit\" value=\"Return to main page\">
                     </form>";
@@ -71,7 +68,7 @@ else{
  
 <?php
 // Creates a route instance with the correct seat layout for the bus and the current date and time. Also sets the seats that are in proximity correctly.
-    function createRouteInstance($con,$d,$r,$b) {
+    function createRouteInstance($d,$r,$b) {
         //Create data for route instance as array
         $data = array ( 
             'Route_no' => $r,

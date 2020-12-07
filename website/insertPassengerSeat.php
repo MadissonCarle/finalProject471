@@ -9,8 +9,10 @@
     $j = $_POST["Column"];
     $EMPID = $_POST["Employee_id"];
 
-    // Create connection
-$con=mysqli_connect("localhost","root","root","471project");
+require_once "config.php";
+
+// Create connection
+$con=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,"471project");
 
 // Check connection
 if (mysqli_connect_errno())
@@ -32,14 +34,13 @@ mysqli_close($con); // close the connection to the database
 $status = -1;
 
 $json=array();
-if($result) { //if the bus exists
+if($result) { //if successful
     global $status;
     $status = "true";
 }
 else{
     global $status;
     $status = "Insert unsuccessful. (passenger seat already exists, or invalid inputs)";
-    $status = $routeno . $date . $time . $i . $j . $EMPID;
 }
 
 $json["status"] = $status;

@@ -1,12 +1,14 @@
 <?php
-/* Verifies that a bus driver exists with this driver id and password. Used to login.
+/* Verifies that an admin exists with this driver id and password. Used to login.
    Outputs status of the request to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message.
 */
 $ADMINID = $_POST["AdminID"];
 $PASSWORD = $_POST["Password"];
 
+require_once "config.php";
+
 // Create connection
-$con=mysqli_connect("localhost","root","root","471project");
+$con=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,"471project");
 
 // Check connection
 if (mysqli_connect_errno())
@@ -19,20 +21,20 @@ if (mysqli_connect_errno())
     exit;
 }
 
-// Get the bus driver
+// Get the admin
 $query = "SELECT Admin_id, Password FROM administrator where Admin_id=? AND Password =?";
 $stmt = $con->prepare($query);
 $stmt->bind_param('is',$ADMINID,$PASSWORD);
 $stmt->execute();
 $result = $stmt->get_result();
 
-//Check if driver exists
+//Check if admin exists
 $theAdmin = $result->fetch_assoc();
 
 mysqli_close($con); // close the connection to the database
 $status = -1;
 
-if($theAdmin) { //if the driver exists
+if($theAdmin) { //if the admin exists with this password
     global $status;
     $status = "true";
 }

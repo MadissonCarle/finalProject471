@@ -10,8 +10,10 @@
     $k = $_POST["Row2"];
     $l = $_POST["Column2"];
 
-    // Create connection
-$con=mysqli_connect("localhost","root","root","471project");
+require_once "config.php";
+
+// Create connection
+$con=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,"471project");
 
 // Check connection
 if (mysqli_connect_errno())
@@ -32,7 +34,7 @@ mysqli_close($con); // close the connection to the database
 $status = -1;
 
 
-if($success) { //if the bus exists
+if($success) { //if the insert was successful
     global $status;
     $status = "true";
 }

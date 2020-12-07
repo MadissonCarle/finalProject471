@@ -29,8 +29,10 @@
     $DATE = $_POST["Date"];
     $STARTTIME = $_POST["Start_time"];
 
-    // Create connection
-$con=mysqli_connect("localhost","root","root","471project");
+require_once "config.php";
+
+// Create connection
+$con=mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,"471project");
 
 // Check connection
 if (mysqli_connect_errno())
