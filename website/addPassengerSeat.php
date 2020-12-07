@@ -20,49 +20,68 @@
     // Find the first free seat and assign it
 
     //Check that employee exists
-    $empExists = employeeExists($con,$EMPID);
+    $empExists = employeeExists($EMPID);
     if (!$empExists) { // if the employee doesn't exist
         $_SESSION["Row"] = -1;
         $_SESSION["Col"] = -1;
         $_SESSION["Employee"] = -1;
         returnToBusLayout($con);
     }
-
     //Check if the employee already has a seat
-    $empHasSeat = hasSeat($con,$ROUTENO,$DATE,$STARTTIME,$EMPID);
+    $empHasSeat = hasSeat($ROUTENO,$DATE,$STARTTIME,$EMPID);
     if($empHasSeat) {
         returnToBusLayout($con);
     }
-
+    
     //Get the seats on this route instance
-    $query = "SELECT * FROM seat where Route_no=? AND Date=? AND Start_time=?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param('iss',$ROUTENO,$DATE,$STARTTIME);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    //Create route data as array
+    $data = array ( 
+        'Route_no' => $ROUTENO,
+        'Date' => $DATE,
+        'Start_time' => $STARTTIME
+    );
+    $url = 'getSeatOnRouteInstance.php';
+    $returnval = sendReceiveJSONPOST($url,$data);
 
     //Find the first available seat
     $goodrow = -1;
     $goodcol = -1;
-    while($row = $result->fetch_assoc()) {
-        $query = "SELECT * FROM passenger_seat where Route_no=? AND Date=? AND Start_time=? AND Seat_row=? AND Seat_col=?";
-        $stmt = $con->prepare($query);
-        $seatrow = $row['Row'];
-        $seatcol = $row['Column'];
-        $stmt->bind_param('issii',$ROUTENO,$DATE,$STARTTIME,$seatrow,$seatcol);
-        $stmt->execute();
-        $result2 = $stmt->get_result();
-        if(! $result2->fetch_assoc()) { // the seat is free
+    $count = 0;
+    while($count < $returnval["TupleCount"]) {
+        $seatrow = $returnval['Tuples'][$count]['Row'];
+        $seatcol = $returnval['Tuples'][$count]['Column'];
+        $data = array ( 
+            'Route_no' => $ROUTENO,
+            'Date' => $DATE,
+            'Start_time' => $STARTTIME,
+            'Seat_row' => $seatrow,
+            'Seat_col' => $seatcol
+        );
+        $url = 'getPassengerSeat.php';
+        $row = sendReceiveJSONPOST($url,$data);
+        
+        if($row["status"] != 'true') { // the seat is free
+            /* echo $seatrow;
+            echo $seatcol;
+            echo $EMPID;
+            exit; */
             global $goodrow, $goodcol;
             $goodrow = $seatrow;
             $goodcol = $seatcol;
             
-            $query = "INSERT INTO passenger_seat (Route_no, Date, Start_time, Seat_row, Seat_col, Employee_id) VALUES (?,?,?,?,?,?)";
-            $stmt = $con->prepare($query);
-            $stmt->bind_param('issiii',$ROUTENO,$DATE,$STARTTIME,$seatrow,$seatcol,$EMPID);
-            $stmt->execute();
+            $data = array ( 
+                'Route_no' => $ROUTENO,
+                'Date' => $DATE,
+                'Start_time' => $STARTTIME,
+                'Row' => $seatrow,
+                'Column' => $seatcol,
+                'Employee_id' => $EMPID
+            );
+            $url = 'insertPassengerSeat.php';
+            $row = sendReceiveJSONPOST($url,$data);
             break;
         }
+        $count += 1;
     }
 // Setting session row and column to -1,-1 is checked for in showBusLayout, means there was no available seat and error is displayed accordingly
     if($goodrow == -1 || $goodcol == -1) { // bus is full
@@ -90,29 +109,33 @@
         exit;
     }
 
-    function employeeExists($con,$EMPID) {
-        $query = "SELECT * FROM passenger where Employee_id=?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('i',$EMPID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if(! $result->fetch_assoc()) {
-            return false;
+    function employeeExists($EMPID) {
+        $data = array ( 
+            'Employee_id' => $EMPID,
+        );
+        $url = 'getPassenger.php';
+        $returnval = sendReceiveJSONPOST($url,$data);
+        
+        if($returnval["status"] == 'true') {
+            return true;
         }
-        return true;
+        return false;
     }
 
-    function hasSeat($con, $ROUTENO,$DATE,$STARTTIME,$EMPID) {
-        $query = "SELECT * FROM passenger_seat where Route_no=? AND Date=? AND Start_time=? AND Employee_id=?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('issi',$ROUTENO,$DATE,$STARTTIME,$EMPID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-            $_SESSION["Row"] = $row['Seat_row'];
-            $_SESSION["Col"] = $row['Seat_col'];
+    function hasSeat($ROUTENO,$DATE,$STARTTIME,$EMPID) {
+         $data = array ( 
+            'Route_no' => $ROUTENO,
+            'Date' => $DATE,
+            'Start_time' => $STARTTIME,
+            'Employee_id' => $EMPID
+        );
+        $url = 'verifyPassengerSeat.php';
+        $return = sendReceiveJSONPOST($url,$data);
+        
+        if ($return["status"] == 'true') {
+            $_SESSION["Row"] = $return['Seat_row'];
+            $_SESSION["Col"] = $return['Seat_col'];
             $_SESSION["Employee"] = $EMPID;
-            returnToBusLayout($con);
             return true;
         }
 
@@ -121,21 +144,41 @@
 
     function setBoardsAt($con,$ROUTENO,$EMPID) {
         //get a location that the bus stops at
-        $query = "SELECT * from stops_at WHERE Route_no =? ORDER BY rand() LIMIT 1";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('i',$ROUTENO);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
+        $data = array ( 
+            'Route_no' => $ROUTENO,
+        );
+        $url = 'getRandomStop.php';
+        $return = sendReceiveJSONPOST($url,$data);
         
         // set that location in boards_at for the passenger
         // Get the boarding time
         date_default_timezone_set("America/Edmonton");
         $time = date("H:i:s"); // get the current time
         
-        $query = "INSERT INTO boards_at (Employee_id,Address,Boarding_time) VALUES (?,?,?)";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param('isi',$EMPID,$row["Address"],$time);
-        $stmt->execute();
+        $data = array ( 
+            'Employee_id' => $EMPID,
+            'Boarding_time' => $time,
+            'Address' => $return['Address']
+        );
+        $url = 'insertBoardsAt.php';
+        $return = sendReceiveJSONPOST($url,$data);
+    }
+
+// Sends data as POST to the form at $url, receives and decodes the JSON response as an array.
+    function sendReceiveJSONPOST($url,$data) {
+        $data = http_build_query($data);
+        $options = array(
+          'http' => array(
+            'method'  => 'POST',
+              'header' =>  "Content-type: application/x-www-form-urlencoded\r\n"."Content-Length: " . strlen($data) . "\r\n",
+                'content' => $data
+            
+            )
+        );
+
+        $context  = stream_context_create( $options );
+        $result = file_get_contents('http://localhost/finalProject471/website/'.$url, false, $context );
+        $response = json_decode( $result, true );
+        return $response;
     }
 ?>
