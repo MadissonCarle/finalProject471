@@ -20,7 +20,7 @@ if (mysqli_connect_errno())
     exit;
 }
 
-$sql2 ="SELECT * FROM in_proximity
+$sql2 ="SELECT DISTINCT * FROM in_proximity
 				WHERE 
 				(Route_no_1=?
 				AND Date_1=?

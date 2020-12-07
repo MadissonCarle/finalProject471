@@ -47,7 +47,7 @@ if ($returnval["status"] == "true") {
     
     echo "<h1>All passengers that were in close proximity to contageous individual</h1>";
     //gets in proximity individuals information 
-    getPassengers($con);
+    getPassengers($con,$ID);
 } else {
 	echo "<p>".$returnval["status"]."</p>";
     mysqli_close($con);
@@ -85,13 +85,14 @@ function getAllProx($allInstances, $returnval ,$con,$ID){
 
 //get the IDs for trips 
 function getIDs($results2,$con,$ID){
+    echo $ID;
     $j=0;
     while($j<$results2["TupleCount"]){
        
         $row2=$results2["Tuples"][$j];
-        print_r($row2);
+       // print_r($row2);
         //query
-        $data =array("row"=>$row2);
+        $data =array("row"=>$row2, "ID"=>$ID);
         $url='verifyIDs.php';
         $returnval=sendReceiveJSONPOST($url,$data);
          
@@ -105,23 +106,25 @@ function getIDs($results2,$con,$ID){
                         
                         $i=$i+1;
                     }
-				} else {
-					
-                        echo "<p>".$returnval["status"]."</p>";
-                        //mysqli_close($con);
-                        echo "<form action=\"index.php\" method=\"post\">
-                    <input type=\"submit\" value=\"Return to main page\">
-                    </form>";
-					
-						
-					}
+                }
+//				} else {
+//					
+//                        echo "<p>".$returnval["status"]."</p>";
+//                        //mysqli_close($con);
+//                        echo "<form action=\"index.php\" method=\"post\">
+//                    <input type=\"submit\" value=\"Return to main page\">
+//                    </form>";
+//					
+//						
+//					}
 					$j=$j+1;
 				}
 }
 
 //get passenger information based on IDs
-function getPassengers($con){
+function getPassengers($con,$ID){
     global $IDs;
+    
     $i=0;
    
 
@@ -129,6 +132,7 @@ function getPassengers($con){
     //all IDs
     while($i<sizeof($IDs)){
         //query
+        if($IDs[$i]!=$ID){
         $data = array("IDs"=>$IDs,"count"=> $i);
         $url='getProxPass.php';
         $returnval = sendReceiveJSONPOST($url,$data);
@@ -139,7 +143,7 @@ function getPassengers($con){
              array_push($passengers,$row);
             $j=$j+1;
         }
-        
+        }
       $i=$i+1;  
     }
     //output resulting passenger info
