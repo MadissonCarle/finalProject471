@@ -16,17 +16,6 @@ $returnval = sendReceiveJSONPOST($url,$data);
 
 session_start();
 
-// Create connection
-$con=mysqli_connect("localhost","root","MyNewPass","471project");
-
-// Check connection
-if (mysqli_connect_errno())
-  {
- echo "<html><body><p>Failed to connect to MySQL: " . mysqli_connect_error()."</p></body></html>";
-    exit;
-}
-
-
 if ($returnval["status"] == "true"){ // check that emp exist
 //output table of their information
    echo "<table border='1'>
@@ -53,10 +42,6 @@ echo "</table>";
 
      } else {
        echo "<p>".$returnval["status"]."</p>";
-    mysqli_close($con);
-    echo "<form action=\"index.php\" method=\"post\">
-                    <input type=\"submit\" value=\"Return to main page\">
-                    </form>";
      }
 echo '<form> <button class="button" type="submit"formaction="/finalProject471/website/adminMainView.php">Return to previous page</button></form>';
 

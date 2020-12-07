@@ -19,16 +19,6 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     exit;
 }
 
-// Create connection
-$con=mysqli_connect("localhost","root","MyNewPass","471project");
-
-// Check connection
-if (mysqli_connect_errno())
-{
-    echo "<html><body><p>Failed to connect to MySQL: " . mysqli_connect_error()."</p></body></html>";
-    exit;
-}
-
 
 //if admin exists
 if ($returnval["status"] == "true"){ 
@@ -46,7 +36,6 @@ if ($returnval["status"] == "true"){
 }
 else{
     echo "<p>".$returnval["status"]."</p>";
-    mysqli_close($con);
     echo "<form action=\"index.php\" method=\"post\">
                     <input type=\"submit\" value=\"Return to main page\">
                     </form>";
