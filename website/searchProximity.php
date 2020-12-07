@@ -85,7 +85,7 @@ function getAllProx($allInstances, $returnval ,$con,$ID){
 
 //get the IDs for trips 
 function getIDs($results2,$con,$ID){
-    echo $ID;
+    
     $j=0;
     while($j<$results2["TupleCount"]){
        
