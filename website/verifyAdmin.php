@@ -20,7 +20,7 @@ if (mysqli_connect_errno())
 }
 
 // Get the bus driver
-$query = "SELECT Admin_id, Password FROM administrator where Admin_id=? AND Password =?";
+$query = "SELECT * FROM administrator where Admin_id=? AND Password =?";
 $stmt = $con->prepare($query);
 $stmt->bind_param('is',$ADMINID,$PASSWORD);
 $stmt->execute();

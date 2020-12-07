@@ -2,18 +2,13 @@
 $IDs=array();
 //$found=0;
 function getEmpSeats($ID,$con){
-    $sql="SELECT * FROM Passenger_seat 
-WHERE Employee_id =?";
-$stmt = $con->prepare($sql);
-$stmt->bind_param('i',$ID);
-$stmt->execute();
-$results = $stmt->get_result();
+    $url = 'verifyEmpSeats.php';
+    global $data;
+$returnval = sendReceiveJSONPOST($url,$data);
 
-//$results = mysqli_query($con, $sql);
-if (mysqli_num_rows($results) < 1) {
-	echo "Employee ID is either incorrect or this employee has not taken any buses";
-	echo $ID;
-} else {
+
+
+if ($returnval["status"] == "true") {
 	echo "<table border='1'>
 	<tr>
 	<th>Route_no</th>
@@ -23,9 +18,11 @@ if (mysqli_num_rows($results) < 1) {
 	<th>Seat_col</th>
 	<th>Employee_id</th>
 	</tr>";
-
+    
+    $i=0;
 	$allInstances= array();
-	while( $row = mysqli_fetch_array($results)){
+    while($i<$returnval["TupleCount"]){
+        $row=$returnval["Tuples"][$i];
 		array_push($allInstances,$row);
 		echo "<tr>";
 		echo "<td>" . $row['Route_no'] . "</td>";
@@ -34,106 +31,103 @@ if (mysqli_num_rows($results) < 1) {
 		echo "<td>" . $row['Seat_row'] . "</td>";
 		echo "<td>" . $row['Seat_col'] . "</td>";
 		echo "<td>" . $row['Employee_id'] . "</td>";
-
 		echo"</tr>";
+        $i=$i+1;
 	}
 	echo "</table>";
-    getAllProx($allInstances,$results,$con,$ID);
+    getAllProx($allInstances,$returnval,$con,$ID);
     
     echo "<h1>All passengers that were in close proximity to contageous individual</h1>";
     getPassengers($con);
+} else {
+	echo "<p>".$returnval["status"]."</p>";
+    mysqli_close($con);
+    echo "<form action=\"index.php\" method=\"post\">
+                    <input type=\"submit\" value=\"Return to main page\">
+                    </form>";
 }
+   
 }
-function getAllProx($allInstances, $results,$con,$ID){
-    
+function getAllProx($allInstances, $returnval ,$con,$ID){
     $i=0;
-	while($i<mysqli_num_rows($results)){
-
-        $sql2 ="SELECT * FROM in_proximity
-				WHERE 
-				(Route_no_1=?
-				AND Date_1=?
-				AND Start_time_1=?
-				AND Row_1=?
-				AND Column_1=?) OR 
-				(Route_no_2=?
-				AND Date_2=?
-				AND Start_time_2=?
-				AND Row_2=?
-				AND Column_2=?) ";
-        $stmt = $con->prepare($sql2);
-        
-        $stmt->bind_param('issiiissii',$allInstances[$i]['Route_no'], $allInstances[$i]['Date'],$allInstances[$i]['Start_time'],$allInstances[$i]['Seat_row'],$allInstances[$i]['Seat_col'],$allInstances[$i]['Route_no'], $allInstances[$i]['Date'],$allInstances[$i]['Start_time'],$allInstances[$i]['Seat_row'],$allInstances[$i]['Seat_col']);
-        
-        $stmt->execute();
-        $results2 = $stmt->get_result();
+    
+	while($i<$returnval["TupleCount"]){
+        $data=array("allInstances"=>$allInstances,"count"=>$i);
+        $url='getProx.php';
+        $returnval = sendReceiveJSONPOST($url,$data);
 		$i=$i+1;
 
-		if (mysqli_num_rows($results2) < 1) {
-            if($found===0){
+		if ($returnval["status"] == "true") {
+            $found=1;
+             
+			getIDs($returnval,$con,$ID);
+           
+           
+            
+		} else {
+            
+			if($found===0){
 			echo "No employees were in proximity";
             }
-		} else {
-			$found=1;
-			getIDs($results2,$con,$ID);
 		}
     }
+
 }
 
 function getIDs($results2,$con,$ID){
-    while( $row2 = mysqli_fetch_array($results2)){
-
-
-        $sql3="SELECT Employee_id FROM passenger_seat
-						WHERE
-						Employee_id <> ?
-				AND
-				(Route_no=?
-				AND Date=?
-				AND Start_time=?
-				AND Seat_row=?
-				AND Seat_col=?) OR 
-				(Route_no=?
-				AND Date=?
-				AND Start_time=?
-				AND Seat_row=?
-				AND Seat_col=?) ";
-        $stmt = $con->prepare($sql3);
+    $j=0;
+    while($j<$results2["TupleCount"]){
+       
+        $row2=$results2["Tuples"][$j];
+       
+        $data =array("row"=>$row2);
+        $url='verifyIDs.php';
+        $returnval=sendReceiveJSONPOST($url,$data);
+         
         
-        $stmt->bind_param('iissiiissii',$ID,$row2[0],$row2[1],$row2[2],$row2[3],$row2[4], $row2[5], $row2[6], $row2[7],$row2[8], $row2[9]);
-        $stmt->execute();
-        $results3 = $stmt->get_result();
-				if (mysqli_num_rows($results3) < 1) {
-					echo "No employees were in proximity";
+				if ($returnval["status"] == "true") {
+                    $i=0;
+					while( $i<$returnval["TupleCount"]){
+                        global $IDs;
+                        $row=$returnval["Tuples"][$i];
+                        array_push($IDs,$row['Employee_id']);
+                        
+                        $i=$i+1;
+                    }
 				} else {
 					
-
-					while( $row3 = mysqli_fetch_array($results3)){
-                        global $IDs;
-                        array_push($IDs,$row3['Employee_id']);
+                        echo "<p>".$returnval["status"]."</p>";
+                        //mysqli_close($con);
+                        echo "<form action=\"index.php\" method=\"post\">
+                    <input type=\"submit\" value=\"Return to main page\">
+                    </form>";
+					
 						
 					}
-					
+					$j=$j+1;
 				}
-
-			}
 }
 
 function getPassengers($con){
     global $IDs;
     $i=0;
+   
+
     $passengers=array();
     while($i<sizeof($IDs)){
-        $sql="SELECT * FROM passenger WHERE Employee_id=?";
-         $stmt = $con->prepare($sql);
-        $stmt->bind_param('i',$IDs[$i]);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while( $row = mysqli_fetch_array($result)){
-            array_push($passengers,$row);
+        $data = array("IDs"=>$IDs,"count"=> $i);
+
+        $url='getProxPass.php';
+        $returnval = sendReceiveJSONPOST($url,$data);
+
+        $j=0;
+        while($j<$returnval["TupleCount"]){
+            $row=$returnval["Tuples"][$j];
+             array_push($passengers,$row);
+            $j=$j+1;
         }
         
-        $i=$i+1;
+      $i=$i+1;  
     }
      echo "<table border='1'>
 <tr>
@@ -143,27 +137,34 @@ function getPassengers($con){
 <th>Department</th>
 <th>Admin ID</th>
 </tr>";
-    $i=0;
-        while($i<sizeof($passengers)){
+    $k=0;
+        while($k<sizeof($passengers)){
     echo "<tr>";
-  echo "<td>" . $passengers[$i]['Employee_id'] . "</td>";
-  echo "<td>" . $passengers[$i]['First_name'] . "</td>";
-  echo "<td>" . $passengers[$i]['Last_name'] . "</td>";
-  echo "<td>" . $passengers[$i]['Department'] . "</td>";
-  echo "<td>" . $passengers[$i]['Admin_id'] . "</td>";
+  echo "<td>" . $passengers[$k]['Employee_id'] . "</td>";
+  echo "<td>" . $passengers[$k]['First_name'] . "</td>";
+  echo "<td>" . $passengers[$k]['Last_name'] . "</td>";
+  echo "<td>" . $passengers[$k]['Department'] . "</td>";
+  echo "<td>" . $passengers[$k]['Admin_id'] . "</td>";
     echo"</tr>";
-            $i =$i+1;
+            $k =$k+1;
         }
-echo "</table>";
+echo "</table>";       
 }
 ?>
 
 
 <?php
 
-		$ID = $_POST["EmployeeID"];
+$ID = $_POST["EmployeeID"];
+global $data;
+$data= array(
+    "EmployeeID"=>$ID
+);
 
+$url = 'verifyEmpSeats.php';
+$returnval = sendReceiveJSONPOST($url,$data);
 
+session_start();
 
 // Create connection
 $con=mysqli_connect("localhost","root","MyNewPass","471project");
@@ -171,7 +172,8 @@ $con=mysqli_connect("localhost","root","MyNewPass","471project");
 // Check connection
 if (mysqli_connect_errno())
 {
-	echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	echo "<html><body><p>Failed to connect to MySQL: " . mysqli_connect_error()."</p></body></html>";
+    exit;
 }
 
 
@@ -183,6 +185,30 @@ echo '<form> <button class="button" type="submit"formaction="/finalProject471/we
 
 
 mysqli_close($con);
+?>
+
+<?php
+
+// Sends data as POST to the form at $url, receives and decodes the JSON response as an array.
+    function sendReceiveJSONPOST($url,$data) {
+        $data = http_build_query($data);
+        $options = array(
+          'http' => array(
+            'method'  => 'POST',
+              'header' =>  "Content-type: application/x-www-form-urlencoded\r\n"."Content-Length: " . strlen($data) . "\r\n",
+                'content' => $data
+            
+            )
+        );
+
+        $context  = stream_context_create( $options );
+        $result = file_get_contents('http://localhost/finalProject471/website/'.$url, false, $context );
+        $response = json_decode( $result, true );
+        return $response;
+    }
+
+
+
 ?>
 
 <!DOCTYPE html>

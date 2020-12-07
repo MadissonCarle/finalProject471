@@ -10,14 +10,14 @@ $data = array (
 $url = 'verifyAdmin.php';
 $returnval = sendReceiveJSONPOST($url,$data);
 
-//// Initialize the session
-//session_start();
-//  $_SESSION["loggedin"] = false;
-//// Check if the user is already logged in, if yes then redirect him to welcome page
-//if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-//    header("location: adminMainView.php");
-//    exit;
-//}
+// Initialize the session
+session_start();
+  $_SESSION["loggedin"] = false;
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: adminMainView.php");
+    exit;
+}
 
 // Create connection
 $con=mysqli_connect("localhost","root","MyNewPass","471project");
@@ -37,7 +37,7 @@ if ($returnval["status"] == "true"){ // check that route and bus exist
     // Store data in session variables
     $_SESSION["loggedin"] = true;
                            
-    $_SESSION["adminID"] = $adminID;                            
+    $_SESSION["AdminID"] = $ADMINID;                            
                             
     // Redirect user to welcome page
     header("location: adminMainView.php"); 
@@ -53,7 +53,8 @@ else{
 ?>
 <?php
 
-function sendReceiveJSONPOST($url,$data) {
+// Sends data as POST to the form at $url, receives and decodes the JSON response as an array.
+    function sendReceiveJSONPOST($url,$data) {
         $data = http_build_query($data);
         $options = array(
           'http' => array(
@@ -69,6 +70,7 @@ function sendReceiveJSONPOST($url,$data) {
         $response = json_decode( $result, true );
         return $response;
     }
+
 
 
 ?>
