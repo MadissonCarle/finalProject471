@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +19,7 @@
 </head>
 <body>
     <form action="/index.php" method="get">
-       
+<!--       page that user can use to navigate to proper home page-->
         <button class="button" type="submit"formaction="/finalProject471/website/LoginAdmin.php"> Login as Admin</button>
         <button class="button" type="submit"formaction="/finalProject471/website/busDriverLogin.php"> Login as Bus Driver</button>
         </form>
@@ -26,8 +27,12 @@
 </html>
 
 <?php
-    session_start();
-    //Unset all the session variables
-    $_SESSION = array();
-    session_destroy(); // get rid of everything in the session
+// Initialize the session
+session_start();
+ 
+// Unset all of the session variables
+$_SESSION = array();
+ 
+// Destroy the session.
+session_destroy();
 ?>

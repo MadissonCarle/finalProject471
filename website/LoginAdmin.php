@@ -17,11 +17,11 @@
 </style>
 </head>
 <body>
-
+<!--collect info for login to test-->
 <form action="CheckAdmin.php" method="post">
    Admin ID: <input type="text" name="AdminID"><br>
    Password: <input type="text" name="Password"><br>
-   <button class="button" type="submit"> Login </button>
+   <input type="submit" value="Login">
 </form>
 </body>
 </html>
