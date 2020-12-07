@@ -1,0 +1,2906 @@
+{
+	"info": {
+		"_postman_id": "5105eccb-4d61-486f-bef5-fd08b8d1b23e",
+		"name": "471 API collection",
+		"description": "API for the bus management project for CPSC 471 Group 20.\r\nWritten in php.\r\nRuns on a localhost, with api files located at finalProject471/website/ and using a database located at localhost/471project.\r\nAll requests are POST requests and accept form data as input, and output a json object.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Verify Route",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "2",
+							"description": "The route number",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/verifyRoute.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"verifyRoute.php"
+					]
+				},
+				"description": "Verifies that the bus route with this route_no exists.\r\nOutputs status of the request to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Verify Route",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "2",
+									"description": "The route number",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/verifyRoute.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"verifyRoute.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 17:42:41 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Bus",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "bus_no",
+							"value": "200",
+							"description": "The bus number (Vehicle_id)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getBus.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getBus.php"
+					]
+				},
+				"description": "Verifies that the bus with this bus_no exists and returns it.\r\n   Outputs status of the request to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message.\r\n   Other outputs:\r\n   'Vehicle_id' is the bus_no, and 'Model_no' is the bus type"
+			},
+			"response": [
+				{
+					"name": "Get Bus",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "bus_no",
+									"value": "200",
+									"description": "The bus number (Vehicle_id)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getBus.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getBus.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 19:14:37 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "50"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Vehicle_id\": 200,\n    \"Model_no\": 1000,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Verify Bus Driver",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Password",
+							"value": "jsmith",
+							"description": "Bus Driver Password",
+							"type": "text"
+						},
+						{
+							"key": "DriverID",
+							"value": "1",
+							"description": "Bus Driver Driver ID",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/verifyBusDriver.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"verifyBusDriver.php"
+					]
+				},
+				"description": "Checks if a bus driver exist with the user name and password provided. Returns the status of the operation to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Verify Bus Driver",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Password",
+									"value": "jsmith",
+									"description": "Bus Driver Password",
+									"type": "text"
+								},
+								{
+									"key": "DriverID",
+									"value": "1",
+									"description": "Bus Driver Driver ID",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/verifyBusDriver.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"verifyBusDriver.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 20:52:45 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Verify Admin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Password",
+							"value": "jburke",
+							"description": "Admin Password",
+							"type": "text"
+						},
+						{
+							"key": "AdminID",
+							"value": "1",
+							"description": "Admin ID",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/verifyAdmin.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"verifyAdmin.php"
+					]
+				},
+				"description": "Checks if an administrator exists with the user name and password provided. Returns the status of the operation to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Verify Admin",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Password",
+									"value": "jburke",
+									"description": "Admin Password",
+									"type": "text"
+								},
+								{
+									"key": "AdminID",
+									"value": "1",
+									"description": "Admin ID",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/verifyAdmin.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"verifyAdmin.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 20:53:34 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Insert Route Instance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Vehicle_id",
+							"value": "200",
+							"description": "The vehicle_id (primary key for bus)",
+							"type": "text"
+						},
+						{
+							"key": "DriverID",
+							"value": "1",
+							"description": "The driver_id (primary key for bus driver)",
+							"type": "text"
+						},
+						{
+							"key": "Route_no",
+							"value": "2",
+							"description": "The route number (primary key for route)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/insertRouteInstance.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"insertRouteInstance.php"
+					]
+				},
+				"description": "Creates a new route_instance for the current date and time, using the specified route in 'Route_no', bus driver in 'DriverID', and bus in 'Vehicle_id' (all primary keys)\r\n   Outputs status of the request to 'status'. 'true' means that the insert was successful, otherwise it will give you the appropriate error message.\r\n   Also outputs the primary key of the created route instance as follows:\r\n   'Route_no' is the route number, 'Date' is the date, 'Start_time' is the start time."
+			},
+			"response": [
+				{
+					"name": "Insert Route Instance",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Vehicle_id",
+									"value": "200",
+									"description": "The vehicle_id (primary key for bus)",
+									"type": "text"
+								},
+								{
+									"key": "DriverID",
+									"value": "1",
+									"description": "The driver_id (primary key for bus driver)",
+									"type": "text"
+								},
+								{
+									"key": "Route_no",
+									"value": "2",
+									"description": "The route number (primary key for route)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/insertRouteInstance.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"insertRouteInstance.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 20:54:20 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "78"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Route_no\": \"2\",\n    \"Date\": \"2020/12/07\",\n    \"Start_time\": \"13:54:20\",\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Bus Type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Model_no",
+							"value": "1000",
+							"description": "The bus type model number (primary key)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getBusType.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getBusType.php"
+					]
+				},
+				"description": " Verifies that the bus_type with this Model_no exists and returns it.\r\n   Outputs status of the request to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message.\r\n   Other outputs:\r\n   'Model_no' is the model number, 'No_of_rows' is the number of rows, and 'No_of_cols' is the number of columns"
+			},
+			"response": [
+				{
+					"name": "Get Bus Type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Model_no",
+									"value": "1000",
+									"description": "The bus type model number (primary key)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getBusType.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getBusType.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 20:55:20 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "63"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Model_no\": 1000,\n    \"No_of_rows\": 6,\n    \"No_of_cols\": 4,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "insertSeat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "2",
+							"description": "The route instance route number",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "2020/12/07",
+							"description": "The route instance date (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "Start_time",
+							"value": "13:54:20",
+							"description": "The route instance start time (format hh:mm:ss, 24 hour time)",
+							"type": "text"
+						},
+						{
+							"key": "Row",
+							"value": "3",
+							"description": "Seat Row ( integer >= 1)",
+							"type": "text"
+						},
+						{
+							"key": "Column",
+							"value": "1",
+							"description": "Seat Column ( integer >= 1)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/insertSeat.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"insertSeat.php"
+					]
+				},
+				"description": "Creates a new seat for the route_instance, using the specified route_instance in 'Route_no','Date','Start_time', and the row and column specified by 'Row' and 'Column'\r\n   Outputs status of the request to 'status'. 'true' means that the insert was successful, otherwise it will give you the appropriate error message. Note that the route instance must already exist in order for this insert to work."
+			},
+			"response": [
+				{
+					"name": "insertSeat",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "2",
+									"description": "The route instance route number",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "2020/12/07",
+									"description": "The route instance date (format yyyy/mm/dd)",
+									"type": "text"
+								},
+								{
+									"key": "Start_time",
+									"value": "13:54:20",
+									"description": "The route instance start time (format hh:mm:ss, 24 hour time)",
+									"type": "text"
+								},
+								{
+									"key": "Row",
+									"value": "4",
+									"description": "Seat Row ( integer >= 1)",
+									"type": "text"
+								},
+								{
+									"key": "Column",
+									"value": "1",
+									"description": "Seat Column ( integer >= 1)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/insertSeat.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"insertSeat.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 20:56:37 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Insert In Proximity",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "2",
+							"description": "The route number of the route instance these seats are on",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "2020/12/07",
+							"description": "The date of the route instance these seats are on (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "Start_time",
+							"value": "13:54:20",
+							"description": "The time of the route instance these seats are on (format hh:mm:ss, 24 hour)",
+							"type": "text"
+						},
+						{
+							"key": "Row1",
+							"value": "4",
+							"description": "Row of seat 1",
+							"type": "text"
+						},
+						{
+							"key": "Column1",
+							"value": "1",
+							"description": "Column of seat 1",
+							"type": "text"
+						},
+						{
+							"key": "Row2",
+							"value": "3",
+							"description": "Row of seat 2",
+							"type": "text"
+						},
+						{
+							"key": "Column2",
+							"value": "1",
+							"description": "Column of seat 2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/insertInProximity.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"insertInProximity.php"
+					]
+				},
+				"description": "Sets two seats on the same route instance to be in proximity, using the specified route_instance in 'Route_no','Date','Start_time', and the rows and columns specified by 'Row1', 'Column1\", 'Row2' and 'Column2'\r\n   Outputs status of the request to 'status'. 'true' means that the insert was successful, otherwise it will give you the appropriate error message. Note that both seats and the route instance must already exist in order for this to work."
+			},
+			"response": [
+				{
+					"name": "Insert In Proximity",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "2",
+									"description": "The route number of the route instance these seats are on",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "2020/12/07",
+									"description": "The date of the route instance these seats are on (format yyyy/mm/dd)",
+									"type": "text"
+								},
+								{
+									"key": "Start_time",
+									"value": "13:54:20",
+									"description": "The time of the route instance these seats are on (format hh:mm:ss, 24 hour)",
+									"type": "text"
+								},
+								{
+									"key": "Row1",
+									"value": "4",
+									"description": "Row of seat 1",
+									"type": "text"
+								},
+								{
+									"key": "Column1",
+									"value": "1",
+									"description": "Column of seat 1",
+									"type": "text"
+								},
+								{
+									"key": "Row2",
+									"value": "3",
+									"description": "Row of seat 2",
+									"type": "text"
+								},
+								{
+									"key": "Column2",
+									"value": "1",
+									"description": "Column of seat 2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/insertInProximity.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"insertInProximity.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 20:58:53 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Seats on Route Instance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "1",
+							"description": "The route instance's route number",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "2020/12/08",
+							"description": "The route instance's date (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "Start_time",
+							"value": "08:00:00",
+							"description": "The route instance's start time (format hh:mm:ss)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getSeatOnRouteInstance.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getSeatOnRouteInstance.php"
+					]
+				},
+				"description": "Gets all the seats for a specified route instance.\r\n        Inputs:\r\n        Route_no is the route number\r\n        Date is the date\r\n        Start_time is the start time\r\n        Outputs status of the request to 'status'. 'true' means that there are tuples returned, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Get Seats on Route Instance",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "1",
+									"description": "The route instance's route number",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "2020/12/08",
+									"description": "The route instance's date (format yyyy/mm/dd)",
+									"type": "text"
+								},
+								{
+									"key": "Start_time",
+									"value": "08:00:00",
+									"description": "The route instance's start time (format hh:mm:ss)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getSeatOnRouteInstance.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getSeatOnRouteInstance.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:03:59 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "609"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Route_no\": \"1\",\n    \"Date\": \"2020/12/08\",\n    \"Start_time\": \"08:00:00\",\n    \"Tuples\": [\n        {\n            \"Row\": 1,\n            \"Column\": 1\n        },\n        {\n            \"Row\": 1,\n            \"Column\": 2\n        },\n        {\n            \"Row\": 1,\n            \"Column\": 3\n        },\n        {\n            \"Row\": 1,\n            \"Column\": 4\n        },\n        {\n            \"Row\": 2,\n            \"Column\": 1\n        },\n        {\n            \"Row\": 2,\n            \"Column\": 2\n        },\n        {\n            \"Row\": 2,\n            \"Column\": 3\n        },\n        {\n            \"Row\": 2,\n            \"Column\": 4\n        },\n        {\n            \"Row\": 3,\n            \"Column\": 1\n        },\n        {\n            \"Row\": 3,\n            \"Column\": 2\n        },\n        {\n            \"Row\": 3,\n            \"Column\": 3\n        },\n        {\n            \"Row\": 3,\n            \"Column\": 4\n        },\n        {\n            \"Row\": 4,\n            \"Column\": 1\n        },\n        {\n            \"Row\": 4,\n            \"Column\": 2\n        },\n        {\n            \"Row\": 4,\n            \"Column\": 3\n        },\n        {\n            \"Row\": 4,\n            \"Column\": 4\n        },\n        {\n            \"Row\": 5,\n            \"Column\": 1\n        },\n        {\n            \"Row\": 5,\n            \"Column\": 2\n        },\n        {\n            \"Row\": 5,\n            \"Column\": 3\n        },\n        {\n            \"Row\": 5,\n            \"Column\": 4\n        },\n        {\n            \"Row\": 6,\n            \"Column\": 1\n        },\n        {\n            \"Row\": 6,\n            \"Column\": 2\n        },\n        {\n            \"Row\": 6,\n            \"Column\": 3\n        },\n        {\n            \"Row\": 6,\n            \"Column\": 4\n        }\n    ],\n    \"TupleCount\": 24,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Passenger Seats on Route Instance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "1",
+							"description": "The route instance's route number",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "2020/12/08",
+							"description": "The route instance's date (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "Start_time",
+							"value": "08:00:00",
+							"description": "The route instance's start time (format hh:mm:ss, 24 hour time)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getPassengerSeatOnRouteInstance.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getPassengerSeatOnRouteInstance.php"
+					]
+				},
+				"description": "Gets all the seats for a specified route instance.\r\n        Inputs:\r\n        Route_no is the route number\r\n        Date is the date\r\n        Start_time is the start time\r\n        Outputs status of the request to 'status'. 'true' means that there are tuples returned, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Get Passenger Seats on Route Instance",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "1",
+									"description": "The route instance's route number",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "2020/12/08",
+									"description": "The route instance's date (format yyyy/mm/dd)",
+									"type": "text"
+								},
+								{
+									"key": "Start_time",
+									"value": "08:00:00",
+									"description": "The route instance's start time (format hh:mm:ss, 24 hour time)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getPassengerSeatOnRouteInstance.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getPassengerSeatOnRouteInstance.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:28:59 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "906"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Route_no\": \"1\",\n    \"Date\": \"2020/12/08\",\n    \"Start_time\": \"08:00:00\",\n    \"Tuples\": [\n        {\n            \"Seat_row\": 1,\n            \"Seat_col\": 1,\n            \"Employee_id\": 1\n        },\n        {\n            \"Seat_row\": 1,\n            \"Seat_col\": 2,\n            \"Employee_id\": 13\n        },\n        {\n            \"Seat_row\": 1,\n            \"Seat_col\": 3,\n            \"Employee_id\": 2\n        },\n        {\n            \"Seat_row\": 1,\n            \"Seat_col\": 4,\n            \"Employee_id\": 14\n        },\n        {\n            \"Seat_row\": 2,\n            \"Seat_col\": 1,\n            \"Employee_id\": 3\n        },\n        {\n            \"Seat_row\": 2,\n            \"Seat_col\": 2,\n            \"Employee_id\": 15\n        },\n        {\n            \"Seat_row\": 2,\n            \"Seat_col\": 3,\n            \"Employee_id\": 4\n        },\n        {\n            \"Seat_row\": 2,\n            \"Seat_col\": 4,\n            \"Employee_id\": 16\n        },\n        {\n            \"Seat_row\": 3,\n            \"Seat_col\": 1,\n            \"Employee_id\": 5\n        },\n        {\n            \"Seat_row\": 3,\n            \"Seat_col\": 2,\n            \"Employee_id\": 17\n        },\n        {\n            \"Seat_row\": 3,\n            \"Seat_col\": 3,\n            \"Employee_id\": 6\n        },\n        {\n            \"Seat_row\": 3,\n            \"Seat_col\": 4,\n            \"Employee_id\": 18\n        },\n        {\n            \"Seat_row\": 4,\n            \"Seat_col\": 1,\n            \"Employee_id\": 7\n        },\n        {\n            \"Seat_row\": 4,\n            \"Seat_col\": 3,\n            \"Employee_id\": 8\n        },\n        {\n            \"Seat_row\": 5,\n            \"Seat_col\": 1,\n            \"Employee_id\": 9\n        },\n        {\n            \"Seat_row\": 5,\n            \"Seat_col\": 3,\n            \"Employee_id\": 10\n        },\n        {\n            \"Seat_row\": 6,\n            \"Seat_col\": 1,\n            \"Employee_id\": 11\n        },\n        {\n            \"Seat_row\": 6,\n            \"Seat_col\": 3,\n            \"Employee_id\": 12\n        }\n    ],\n    \"TupleCount\": 18,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Passenger Seat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "1",
+							"description": "The route number",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "2020/12/08",
+							"description": "The date (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "Start_time",
+							"value": "08:00:00",
+							"description": "The start time (format hh:mm:ss, 24 hour time)",
+							"type": "text"
+						},
+						{
+							"key": "Seat_row",
+							"value": "1",
+							"description": "The seat row",
+							"type": "text"
+						},
+						{
+							"key": "Seat_col",
+							"value": "1",
+							"description": "The seat column",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getPassengerSeat.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getPassengerSeat.php"
+					]
+				},
+				"description": "Verifies that the passenger_seat exists and returns it\r\n   Outputs status of the request to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message.\r\n   Inputs:\r\n    $_POST[\"Route_no\"] is the route number\r\n    $_POST[\"Date\"] is the date\r\n    $_POST[\"Start_time\"] is the start time\r\n    $_POST['Seat_row'] is the seat row\r\n    $_POST['Seat_col'] is the seat column\r\n    Outputs: the listed variables above, as well as status and Employee_id (the employee in that seat)"
+			},
+			"response": [
+				{
+					"name": "Get Passenger Seat",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "1",
+									"description": "The route number",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "2020/12/08",
+									"description": "The date (format yyyy/mm/dd)",
+									"type": "text"
+								},
+								{
+									"key": "Start_time",
+									"value": "08:00:00",
+									"description": "The start time (format hh:mm:ss, 24 hour time)",
+									"type": "text"
+								},
+								{
+									"key": "Seat_row",
+									"value": "1",
+									"description": "The seat row",
+									"type": "text"
+								},
+								{
+									"key": "Seat_col",
+									"value": "1",
+									"description": "The seat column",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getPassengerSeat.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getPassengerSeat.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:31:45 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "124"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Employee_id\": 1,\n    \"Route_no\": \"1\",\n    \"Date\": \"2020/12/08\",\n    \"Start_time\": \"08:00:00\",\n    \"Seat_row\": \"1\",\n    \"Seat_col\": \"1\",\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Verify Passenger Seat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "1",
+							"description": "The route number",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "2020/12/08",
+							"description": "The date (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "Start_time",
+							"value": "08:00:00",
+							"description": "The route start time (format hh:mm:ss, 24 hour time)",
+							"type": "text"
+						},
+						{
+							"key": "Employee_id",
+							"value": "4",
+							"description": "The employee id",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/verifyPassengerSeat.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"verifyPassengerSeat.php"
+					]
+				},
+				"description": "Verifies that the passenger_seat exists for an employee on this route instanceand returns it\r\n   Outputs status of the request to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message.\r\n   Inputs:\r\n    Route_no is the route number\r\n    Date is the date\r\n    Start_time is the start time\r\n    Employee_id is the employee id\r\n    Outputs: the listed variables above, as well as status, seat row to 'Seat_row' and seat column to 'Seat_col'"
+			},
+			"response": [
+				{
+					"name": "Verify Passenger Seat",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "1",
+									"description": "The route number",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "2020/12/08",
+									"description": "The date (format yyyy/mm/dd)",
+									"type": "text"
+								},
+								{
+									"key": "Start_time",
+									"value": "08:00:00",
+									"description": "The route start time (format hh:mm:ss, 24 hour time)",
+									"type": "text"
+								},
+								{
+									"key": "Employee_id",
+									"value": "4",
+									"description": "The employee id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/verifyPassengerSeat.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"verifyPassengerSeat.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:37:39 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "122"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Employee_id\": \"4\",\n    \"Route_no\": \"1\",\n    \"Date\": \"2020/12/08\",\n    \"Start_time\": \"08:00:00\",\n    \"Seat_row\": 2,\n    \"Seat_col\": 3,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Passenger",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Employee_id",
+							"value": "1",
+							"description": "The employee id",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getPassenger.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getPassenger.php"
+					]
+				},
+				"description": "Verifies that an employee exists with the employee id 'Employee_id', and returns their information.\r\n   Outputs status of the request to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Get Passenger",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Employee_id",
+									"value": "1",
+									"description": "The employee id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getPassenger.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getPassenger.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:40:10 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "112"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Employee_id\": \"1\",\n    \"First_name\": \"Adam\",\n    \"Last_name\": \"Chan\",\n    \"Department\": \"Marketing\",\n    \"Admin_id\": 1,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Insert Boards At",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "Address",
+							"value": "123 Apple Road",
+							"description": "The boarding location",
+							"type": "text"
+						},
+						{
+							"key": "Employee_id",
+							"value": "15",
+							"description": "The passenger's employee id",
+							"type": "text"
+						},
+						{
+							"key": "Boarding_time",
+							"value": "09:20:59",
+							"description": "The boarding time",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/insertBoardsAt.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"insertBoardsAt.php"
+					]
+				},
+				"description": " Creates a new instance of boards_at, using the specified location in 'Address', the passenger given by 'Employee_id', and the boarding time given by \"Boarding_time\"\r\n   Outputs status of the request to 'status'. 'true' means that the insert was successful, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Insert Boards At",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Address",
+									"value": "123 Apple Road",
+									"description": "The boarding location",
+									"type": "text"
+								},
+								{
+									"key": "Employee_id",
+									"value": "15",
+									"description": "The passenger's employee id",
+									"type": "text"
+								},
+								{
+									"key": "Boarding_time",
+									"value": "09:20:59",
+									"description": "The boarding time",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/insertBoardsAt.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"insertBoardsAt.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:40:50 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Insert Disembarks At",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "Address",
+							"value": "123 Apple Road",
+							"description": "The boarding location",
+							"type": "text"
+						},
+						{
+							"key": "Employee_id",
+							"value": "15",
+							"description": "The passenger's employee id",
+							"type": "text"
+						},
+						{
+							"key": "Disembark_time",
+							"value": "09:20:55",
+							"description": "The disembark time",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/insertDisembarksAt.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"insertDisembarksAt.php"
+					]
+				},
+				"description": "Creates a new instance of disembarks_at, using the specified location in 'Address', the passenger given by 'Employee_id', and the disembark time given by \"disembark_time\"\r\n   Outputs status of the request to 'status'. 'true' means that the insert was successful, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Insert Disembarks At",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "Address",
+									"value": "123 Apple Road",
+									"description": "The boarding location",
+									"type": "text"
+								},
+								{
+									"key": "Employee_id",
+									"value": "15",
+									"description": "The passenger's employee id",
+									"type": "text"
+								},
+								{
+									"key": "Disembark_time",
+									"value": "09:20:55",
+									"description": "The disembark time",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/insertDisembarksAt.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"insertDisembarksAt.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:41:15 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Insert Passenger Seat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "2",
+							"description": "The route number",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "2020/12/07",
+							"description": "Date (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "Start_time",
+							"value": "14:43:11",
+							"description": "Time (format hh:mm:ss, 24 hour time)",
+							"type": "text"
+						},
+						{
+							"key": "Row",
+							"value": "4",
+							"description": "The seat row ( integer >= 1)",
+							"type": "text"
+						},
+						{
+							"key": "Column",
+							"value": "1",
+							"description": "The seat column  ( integer >= 1)",
+							"type": "text"
+						},
+						{
+							"key": "Employee_id",
+							"value": "12",
+							"description": "The employee id",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/insertPassengerSeat.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"insertPassengerSeat.php"
+					]
+				},
+				"description": "Creates a new passenger_seat for the route_instance, using the specified route_instance in 'Route_no','Date','Start_time', the passenger with employee id 'Employee_id', and the row and column specified by 'Row' and 'Column'\r\n   Outputs status of the request to 'status'. 'true' means that the insert was successful, otherwise it will give you the appropriate error message."
+			},
+			"response": [
+				{
+					"name": "Insert Passenger Seat",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "2",
+									"description": "The route number",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "2020/12/07",
+									"description": "Date (format yyyy/mm/dd)",
+									"type": "text"
+								},
+								{
+									"key": "Start_time",
+									"value": "14:43:11",
+									"description": "Time (format hh:mm:ss, 24 hour time)",
+									"type": "text"
+								},
+								{
+									"key": "Row",
+									"value": "4",
+									"description": "The seat row ( integer >= 1)",
+									"type": "text"
+								},
+								{
+									"key": "Column",
+									"value": "1",
+									"description": "The seat column  ( integer >= 1)",
+									"type": "text"
+								},
+								{
+									"key": "Employee_id",
+									"value": "12",
+									"description": "The employee id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/insertPassengerSeat.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"insertPassengerSeat.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:43:37 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Random Stop",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Route_no",
+							"value": "2",
+							"description": "The route number",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getRandomStop.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getRandomStop.php"
+					]
+				},
+				"description": "Gets a random location that the route 'Route_no' stops at and returns it.\r\n   Outputs status of the request to 'status'. 'true' means that it exists, otherwise it will give you the appropriate error message.\r\n   Other outputs:\r\n   'Address' is the location returned."
+			},
+			"response": [
+				{
+					"name": "Get Random Stop",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Route_no",
+									"value": "2",
+									"description": "The route number",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getRandomStop.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getRandomStop.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 21:44:07 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "44"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Address\": \"45 Kiwi Avenue\",\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Verify IDs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "row[Route_no_1]",
+							"value": "1",
+							"description": "Route number 1",
+							"type": "text"
+						},
+						{
+							"key": "row[Date_1]",
+							"value": "2020/12/08",
+							"description": "Date 1 (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "row[Start_time_1]",
+							"value": "08:00:00",
+							"description": "Start time 1 (format hh:mm:ss)",
+							"type": "text"
+						},
+						{
+							"key": "row[Row_1]",
+							"value": "1",
+							"description": "Row of seat 1",
+							"type": "text"
+						},
+						{
+							"key": "row[Column_1]",
+							"value": "1",
+							"description": "Column of seat 1",
+							"type": "text"
+						},
+						{
+							"key": "row[Route_no_2]",
+							"value": "1",
+							"description": "Route number 2",
+							"type": "text"
+						},
+						{
+							"key": "row[Date_2]",
+							"value": "2020/12/08",
+							"description": "Date 2 (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "row[Start_time_2]",
+							"value": "08:00:00",
+							"description": "Start time 2 (format hh:mm:ss)",
+							"type": "text"
+						},
+						{
+							"key": "row[Row_2]",
+							"value": "1",
+							"description": "Row of seat 2",
+							"type": "text"
+						},
+						{
+							"key": "row[Column_2]",
+							"value": "2",
+							"description": "Column of seat 2",
+							"type": "text"
+						},
+						{
+							"key": "ID",
+							"value": "1",
+							"description": "Employee ID of contagious indvidual",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/verifyIDs.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"verifyIDs.php"
+					]
+				},
+				"description": "does stuff"
+			},
+			"response": [
+				{
+					"name": "Verify IDs",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "row[Route_no_1]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "row[Date_1]",
+									"value": "2020/12/08",
+									"type": "text"
+								},
+								{
+									"key": "row[Start_time_1]",
+									"value": "08:00:00",
+									"type": "text"
+								},
+								{
+									"key": "row[Row_1]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "row[Column_1]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "row[Route_no_2]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "row[Date_2]",
+									"value": "2020/12/08",
+									"type": "text"
+								},
+								{
+									"key": "row[Start_time_2]",
+									"value": "08:00:00",
+									"type": "text"
+								},
+								{
+									"key": "row[Row_2]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "row[Column_2]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "ID",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/verifyIDs.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"verifyIDs.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 19:59:15 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/8.0.0"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.0.0"
+						},
+						{
+							"key": "Content-Length",
+							"value": "62"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Tuples\": [\n        {\n            \"Employee_id\": 13\n        }\n    ],\n    \"TupleCount\": 1,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Verify Emp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "FirstName",
+							"value": "Adam",
+							"description": "first name",
+							"type": "text"
+						},
+						{
+							"key": "LastName",
+							"value": "Chan",
+							"description": "last name",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/verifyEmp.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"verifyEmp.php"
+					]
+				},
+				"description": "things"
+			},
+			"response": [
+				{
+					"name": "Verify Emp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "FirstName",
+									"value": "Adam",
+									"description": "first name",
+									"type": "text"
+								},
+								{
+									"key": "LastName",
+									"value": "Chan",
+									"description": "last name",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/verifyEmp.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"verifyEmp.php"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 17:33:29 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/8.0.0"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.0.0"
+						},
+						{
+							"key": "Content-Length",
+							"value": "138"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=99"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Tuples\": [\n        {\n            \"Employee_id\": 1,\n            \"First_name\": \"Adam\",\n            \"Last_name\": \"Chan\",\n            \"Department\": \"Marketing\",\n            \"Admin_id\": 1\n        }\n    ],\n    \"TupleCount\": 1,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Prox Pass",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "IDs[0]",
+							"value": "13",
+							"description": "Emp ID",
+							"type": "text"
+						},
+						{
+							"key": "IDs[1]",
+							"value": "15",
+							"description": "Emp ID",
+							"type": "text"
+						},
+						{
+							"key": "count",
+							"value": "0",
+							"description": "current index",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getProxPass.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getProxPass.php"
+					]
+				},
+				"description": "gets employee information for specified IDs"
+			},
+			"response": [
+				{
+					"name": "Get Prox Pass",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "IDs[0]",
+									"value": "13",
+									"type": "text"
+								},
+								{
+									"key": "IDs[1]",
+									"value": "15",
+									"type": "text"
+								},
+								{
+									"key": "count",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getProxPass.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getProxPass.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 18:37:46 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/8.0.0"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.0.0"
+						},
+						{
+							"key": "Content-Length",
+							"value": "146"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Tuples\": [\n        {\n            \"Employee_id\": 13,\n            \"First_name\": \"Sienna\",\n            \"Last_name\": \"Cassidy\",\n            \"Department\": \"Engineering\",\n            \"Admin_id\": 2\n        }\n    ],\n    \"TupleCount\": 1,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Prox",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "allInstances[0][Route_no]",
+							"value": "1",
+							"description": "Route number",
+							"type": "text"
+						},
+						{
+							"key": "allInstances[0][Date]",
+							"value": "2020/12/08",
+							"description": "Date (format yyyy/mm/dd)",
+							"type": "text"
+						},
+						{
+							"key": "allInstances[0][Start_time]",
+							"value": "08:00:00",
+							"description": "Time (fomat hh:mm:ss)",
+							"type": "text"
+						},
+						{
+							"key": "allInstances[0][Seat_row]",
+							"value": "1",
+							"description": "The seat row",
+							"type": "text"
+						},
+						{
+							"key": "allInstances[0][Seat_col]",
+							"value": "1",
+							"description": "The seat column",
+							"type": "text"
+						},
+						{
+							"key": "count",
+							"value": "0",
+							"description": "current index",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/getProx.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"getProx.php"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				},
+				"description": "gets all proximity instances. Note that this accepts an array for the paramater 'allInstances', with the parameters route number, date, start time, seat row, and seat column."
+			},
+			"response": [
+				{
+					"name": "Get Prox",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "allInstances[0][Route_no]",
+									"value": "1",
+									"description": "Route number",
+									"type": "text"
+								},
+								{
+									"key": "allInstances[0][Date]",
+									"value": "2020/12/08",
+									"description": "Date (format yyyy/mm/dd)",
+									"type": "text"
+								},
+								{
+									"key": "allInstances[0][Start_time]",
+									"value": "08:00:00",
+									"description": "Time (fomat hh:mm:ss)",
+									"type": "text"
+								},
+								{
+									"key": "allInstances[0][Seat_row]",
+									"value": "1",
+									"description": "The seat row",
+									"type": "text"
+								},
+								{
+									"key": "allInstances[0][Seat_col]",
+									"value": "1",
+									"description": "The seat column",
+									"type": "text"
+								},
+								{
+									"key": "count",
+									"value": "0",
+									"description": "current index",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/getProx.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"getProx.php"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 22:18:59 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/7.4.13"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.13"
+						},
+						{
+							"key": "Content-Length",
+							"value": "577"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Tuples\": [\n        {\n            \"Route_no_1\": 1,\n            \"Date_1\": \"2020/12/08\",\n            \"Start_time_1\": \"08:00:00\",\n            \"Row_1\": 1,\n            \"Column_1\": 1,\n            \"Route_no_2\": 1,\n            \"Date_2\": \"2020/12/08\",\n            \"Start_time_2\": \"08:00:00\",\n            \"Row_2\": 1,\n            \"Column_2\": 2\n        },\n        {\n            \"Route_no_1\": 1,\n            \"Date_1\": \"2020/12/08\",\n            \"Start_time_1\": \"08:00:00\",\n            \"Row_1\": 1,\n            \"Column_1\": 1,\n            \"Route_no_2\": 1,\n            \"Date_2\": \"2020/12/08\",\n            \"Start_time_2\": \"08:00:00\",\n            \"Row_2\": 2,\n            \"Column_2\": 1\n        },\n        {\n            \"Route_no_1\": 1,\n            \"Date_1\": \"2020/12/08\",\n            \"Start_time_1\": \"08:00:00\",\n            \"Row_1\": 1,\n            \"Column_1\": 1,\n            \"Route_no_2\": 1,\n            \"Date_2\": \"2020/12/08\",\n            \"Start_time_2\": \"08:00:00\",\n            \"Row_2\": 2,\n            \"Column_2\": 2\n        }\n    ],\n    \"TupleCount\": 3,\n    \"status\": \"true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Verify Emp Seats",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "EmployeeID",
+							"value": "1",
+							"description": "employee id",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/finalProject471/website/verifyEmpSeats.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"finalProject471",
+						"website",
+						"verifyEmpSeats.php"
+					]
+				},
+				"description": "finds seats employee was in"
+			},
+			"response": [
+				{
+					"name": "Verify Emp Seats",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "EmployeeID",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/finalProject471/website/verifyEmpSeats.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"finalProject471",
+								"website",
+								"verifyEmpSeats.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 07 Dec 2020 19:34:25 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/8.0.0"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.0.0"
+						},
+						{
+							"key": "Content-Length",
+							"value": "249"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Tuples\": [\n        {\n            \"Route_no\": 1,\n            \"Date\": \"2020/12/08\",\n            \"Start_time\": \"08:00:00\",\n            \"Seat_row\": 1,\n            \"Seat_col\": 1,\n            \"Employee_id\": 1\n        },\n        {\n            \"Route_no\": 1,\n            \"Date\": \"2020/12/09\",\n            \"Start_time\": \"08:00:00\",\n            \"Seat_row\": 3,\n            \"Seat_col\": 1,\n            \"Employee_id\": 1\n        }\n    ],\n    \"TupleCount\": 2,\n    \"status\": \"true\"\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"id": "baseUrl",
+			"key": "baseUrl",
+			"value": "http://localhost/finalProject471/website",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
