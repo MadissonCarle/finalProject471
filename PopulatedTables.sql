@@ -54,7 +54,7 @@ CREATE TABLE `BOARDS_AT` (
   `Employee_id` int NOT NULL,
   `Address` varchar(45) NOT NULL,
   `Boarding_time` varchar(45) NOT NULL,
-  PRIMARY KEY (`Employee_id`,`Address`,`Boarding_time`),
+  PRIMARY KEY (`Employee_id`,`Address`),
   KEY `Address_BOARDS_AT_idx` (`Address`),
   CONSTRAINT `Address_BOARDS_AT` FOREIGN KEY (`Address`) REFERENCES `LOCATION` (`Address`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Employee_id_BOARDS_AT` FOREIGN KEY (`Employee_id`) REFERENCES `PASSENGER` (`Employee_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -159,7 +159,7 @@ CREATE TABLE `DISEMBARKS_AT` (
   `Employee_id` int NOT NULL,
   `Address` varchar(45) NOT NULL,
   `Disembark_time` varchar(45) NOT NULL,
-  PRIMARY KEY (`Employee_id`,`Address`,`Disembark_time`),
+  PRIMARY KEY (`Employee_id`,`Address`),
   KEY `Address_DISEMBARKS_AT_idx` (`Address`),
   CONSTRAINT `Address_DISEMBARKS_AT` FOREIGN KEY (`Address`) REFERENCES `LOCATION` (`Address`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Employee_id_DISEMBARKS_AT` FOREIGN KEY (`Employee_id`) REFERENCES `PASSENGER` (`Employee_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -422,3 +422,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2020-12-05 14:47:41
